@@ -85,7 +85,8 @@ CREATE TABLE if not exists receipt(
   price TEXT NOT NULL,
   currencyCode TEXT NOT NULL,
   dateDue DATETIME NOT NULL DEFAULT (datetime('now', '1 month')),
-  pkReceiptStatus INT REFERENCES rentStatus(pkRentStatus),
+  pkReceiptStatus INT REFERENCES receiptStatus(pkReceiptStatus),
+  currentlyPaid   TEXT NOT NULL DEFAULT ('0.00'),
   isPaid INT DEFAULT (0)
 );
 

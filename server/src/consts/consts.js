@@ -77,8 +77,8 @@ const VEHICLE_STATUS = {
 	NotAvailable: 4,
 };
 /**
- * 
- * @param {*} str 
+ *
+ * @param {*} str
  * @returns {string}
  */
 function toTitleCase(str) {
@@ -86,5 +86,28 @@ function toTitleCase(str) {
 		return txt.charAt(0).toUpperCase() + txt.substr(1).toLowerCase();
 	});
 }
+const PAY_TOLERANCE = 5;
+const RECEIPT_STATUS = {
+	Waiting: 1,
+	Paid: 2,
+	Late: 3,
+	Due: 4
+};
+/**
+ *
+ * @param {string} value
+ * @returns {[number,number]}
+ */
+function parseCurrency(value) {
+	return value.split('.').map((item) => +item);
+}
+/**
+ *
+ * @param {number} value
+ * @returns {string}
+ */
+function makeCurrencyString(value) {
+	return value.toFixed(2);
+}
 
-export default { ERRORS, handleNumeric, useQueryParser, isNumber, VEHICLE_STATUS, toTitleCase };
+export default { RECEIPT_STATUS, makeCurrencyString, PAY_TOLERANCE, ERRORS, handleNumeric, useQueryParser, isNumber, VEHICLE_STATUS, toTitleCase, parseCurrency };

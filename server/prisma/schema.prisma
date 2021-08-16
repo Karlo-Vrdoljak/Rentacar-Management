@@ -8,17 +8,18 @@ datasource db {
 }
 
 model receipt {
-  pkReceipt       Int         @id @default(autoincrement())
-  createdAt       DateTime    @default(now())
-  changedAt       DateTime    @default(now()) @updatedAt
+  pkReceipt       Int            @id @default(autoincrement())
+  createdAt       DateTime       @default(now())
+  changedAt       DateTime       @default(now()) @updatedAt
   pkRent          Int?
   price           String
   currencyCode    String
-  dateDue         DateTime    @default(dbgenerated("datetime('now', '1 month')"))
+  dateDue         DateTime       @default(dbgenerated("datetime('now', '1 month')"))
   pkReceiptStatus Int?
-  isPaid          Int?        @default(0)
-  rentStatus      rentStatus? @relation(fields: [pkReceiptStatus], references: [pkRentStatus])
-  rent            rent?       @relation(fields: [pkRent], references: [pkRent])
+  currentlyPaid   String         @default("0.00")
+  isPaid          Int?           @default(0)
+  receiptStatus   receiptStatus? @relation(fields: [pkReceiptStatus], references: [pkReceiptStatus])
+  rent            rent?          @relation(fields: [pkRent], references: [pkRent])
 }
 
 model rent {
@@ -42,11 +43,10 @@ model rent {
 }
 
 model rentStatus {
-  pkRentStatus Int       @id @default(autoincrement())
-  createdAt    DateTime  @default(now())
-  changedAt    DateTime  @default(now()) @updatedAt
+  pkRentStatus Int      @id @default(autoincrement())
+  createdAt    DateTime @default(now())
+  changedAt    DateTime @default(now()) @updatedAt
   name         String
-  receipt      receipt[]
   rent         rent[]
 }
 
@@ -98,8 +98,9 @@ model vehicleStatus {
 }
 
 model receiptStatus {
-  pkReceiptStatus Int      @id @default(autoincrement())
-  createdAt       DateTime @default(now())
-  changedAt       DateTime @default(now())
+  pkReceiptStatus Int       @id @default(autoincrement())
+  createdAt       DateTime  @default(now())
+  changedAt       DateTime  @default(now())
   name            String
+  receipt         receipt[]
 }

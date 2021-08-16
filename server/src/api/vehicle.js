@@ -1,4 +1,4 @@
-import { express, prisma, security, consts } from '../../app.module.js';
+import { express, prisma, consts } from '../../app.module.js';
 const router = express.Router();
 
 router.get('/pk', async (req, res) => {
@@ -8,6 +8,36 @@ router.get('/pk', async (req, res) => {
 
 router.get('/all', async (req, res) => {
 	res.send(await prisma.vehicle.findMany({ include: { vehicleStatus: true } }));
+});
+
+router.put('/update/status', async (req, res) => {
+	const { pkVehicle, pkVehicleStatus } = req.body;
+	res.send(
+		pkVehicle
+			? await prisma.vehicle.update({
+					where: { pkVehicle },
+					data: {
+						vehicleStatus: {
+							connect: { pkVehicleStatus },
+						},
+					},
+			  })
+			: {}
+	);
+});
+
+router.put('/update/kilometers', async (req, res) => {
+	const { pkVehicle, currentKilometers } = req.body;
+	res.send(
+		pkVehicle
+			? await prisma.vehicle.update({
+					where: { pkVehicle },
+					data: {
+						currentKilometers,
+					},
+			  })
+			: {}
+	);
 });
 
 router.post('/upsert', async (req, res) => {
@@ -20,32 +50,45 @@ router.post('/upsert', async (req, res) => {
 		nextCode = consts.toTitleCase(manufacturer)[0].toUpperCase() + consts.toTitleCase(model)[0].toUpperCase() + 1;
 	}
 	res.send(
-		await prisma.vehicle.upsert({
-			where: { pkVehicle },
-			create: {
-				manufacturer: consts.toTitleCase(manufacturer),
-				model: consts.toTitleCase(model),
-				dateOfManufacture,
-				startingKilometers,
-				currentKilometers,
-				gasType,
-				color,
-				code: nextCode,
-				vehicleStatus: {
-					connect: { pkVehicleStatus: consts.VEHICLE_STATUS.Available },
-				},
-			},
-			update: {
-				manufacturer: consts.toTitleCase(manufacturer),
-				model: consts.toTitleCase(model),
-				dateOfManufacture,
-				startingKilometers,
-				currentKilometers,
-				gasType,
-				color,
-			},
-		})
+		pkVehicle
+			? await prisma.vehicle.update({
+					where: { pkVehicle },
+					data: {
+						manufacturer: consts.toTitleCase(manufacturer),
+						model: consts.toTitleCase(model),
+						dateOfManufacture,
+						startingKilometers,
+						currentKilometers,
+						gasType,
+						color,
+					},
+			  })
+			: await prisma.vehicle.create({
+					data: {
+						manufacturer: consts.toTitleCase(manufacturer),
+						model: consts.toTitleCase(model),
+						dateOfManufacture,
+						startingKilometers,
+						currentKilometers,
+						gasType,
+						color,
+						code: nextCode,
+						vehicleStatus: {
+							connect: { pkVehicleStatus: consts.VEHICLE_STATUS.Available },
+						},
+					},
+			  })
 	);
+});
+
+router.delete('/one', async (req, res, next) => {
+	const { pkVehicle } = req.query;
+	try {
+		await prisma.vehicle.delete({ where: { pkVehicle } });
+		res.send({pkVehicle});
+	} catch (error) {
+		next(error);
+	}
 });
 
 export default router;

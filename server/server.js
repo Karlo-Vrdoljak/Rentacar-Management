@@ -1,4 +1,5 @@
-import { dotenv, express, security, userApi, bodyParser, vehicleApi, consts } from './app.module.js';
+import { bodyParser, consts, dotenv, express, rentApi, security, userApi, vehicleApi } from './app.module.js';
+import findLateReceiptsCRON from './src/cron/findLateReceipts.js';
 
 dotenv.config();
 
@@ -16,6 +17,7 @@ app.use((req, res, next) => consts.useQueryParser(req, res, next));
 
 app.use('/user', userApi);
 app.use('/vehicle', vehicleApi);
+app.use('/rent', rentApi);
 
 app.get('/test', async (req, res) => {
 	const b = await security.hashString('asdfasdf');
@@ -32,3 +34,5 @@ app.listen(port, () => {
 	// tslint:disable-next-line:no-console
 	console.log(`server started at http://localhost:${port}`);
 });
+
+findLateReceiptsCRON();
