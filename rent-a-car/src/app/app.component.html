@@ -1,6 +1,10 @@
-<span class="p-float-label">
-	<input id="float-input" type="text" pInputText />
-	<label for="float-input">Username</label>
-</span>
-
-<router-outlet></router-outlet>
+<div>
+	<!-- <app-nav class="sticky top-0 h-20 z-50"></app-nav> -->
+	<header class="sticky top-0 z-50">
+    <app-nav></app-nav>
+  </header>
+	<main class="min-h-screen relative">
+		<router-outlet></router-outlet>
+	</main>
+	<footer><app-footer></app-footer></footer>
+</div>

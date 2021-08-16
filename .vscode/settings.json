@@ -1,0 +1,11 @@
+{
+  "sqltools.connections": [
+    {
+      "previewLimit": 50,
+      "driver": "SQLite",
+      "name": "rentit",
+      "database": "${workspaceFolder:Rentacar-Management}/server/prisma/rentit.db"
+    }
+  ],
+  "sqltools.useNodeRuntime": true
+}

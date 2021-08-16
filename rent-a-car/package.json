@@ -15,7 +15,8 @@
     "watch": "ng build --watch --configuration development",
     "predev:prod": "npm run prebuild",
     "dev:prod": "ng serve --configuration production",
-    "test": "ng test"
+    "test": "ng test",
+    "change_theme": "node change.theme.js"
   },
   "private": true,
   "dependencies": {
@@ -27,6 +28,7 @@
     "@angular/platform-browser": "~12.2.0",
     "@angular/platform-browser-dynamic": "~12.2.0",
     "@angular/router": "~12.2.0",
+    "dotenv": "^10.0.0",
     "postcss-flexbugs-fixes": "^5.0.2",
     "postcss-preset-env": "^6.7.0",
     "primeicons": "^4.1.0",

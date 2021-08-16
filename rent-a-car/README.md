@@ -1,27 +1,26 @@
-# RentACar
+# Angular-boilerplate
+### Angular@12
+A boilerplate template project with PrimeNG@12 and tailwind
 
-This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 12.2.1.
 
-## Development server
+included features:
+### tailwind
+- tailwind.config
+- tailwind.config.prod
 
-Run `ng serve` for a dev server. Navigate to `http://localhost:4200/`. The app will automatically reload if you change any of the source files.
+### primeng
+- theme
 
-## Code scaffolding
+### dynamic env config load
+- config.json
+- config.prod.json
 
-Run `ng generate component component-name` to generate a new component. You can also use `ng generate directive|pipe|service|class|guard|interface|enum|module`.
 
-## Build
-
-Run `ng build` to build the project. The build artifacts will be stored in the `dist/` directory.
-
-## Running unit tests
-
-Run `ng test` to execute the unit tests via [Karma](https://karma-runner.github.io).
-
-## Running end-to-end tests
-
-Run `ng e2e` to execute the end-to-end tests via a platform of your choice. To use this command, you need to first add a package that implements end-to-end testing capabilities.
-
-## Further help
-
-To get more help on the Angular CLI use `ng help` or go check out the [Angular CLI Overview and Command Reference](https://angular.io/cli) page.
+### theme changing
+#### the command below will adapt the theme to use a different color palette
+#### arguments
+- #7fc849 -> primary color
+- #294727 -> primary text color
+- #95B7FF -> accent color
+- #27446B -> accent text color
+- npm run change_theme #7fc849 #294727 #95B7FF #27446B

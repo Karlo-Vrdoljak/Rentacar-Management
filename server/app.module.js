@@ -1,0 +1,13 @@
+import express from 'express';
+import dotenv from 'dotenv';
+import prisma from './prisma/prisma.js';
+import Security from './src/security/security.js';
+import userApi from './src/api/user.js';
+import vehicleApi from './src/api/vehicle.js';
+import bodyParser from 'body-parser';
+import consts from './src/consts/consts.js';
+import jwt from 'jsonwebtoken';
+import bcrypt from 'bcrypt';
+import expressJwt from 'express-jwt';
+const security = new Security();
+export { consts, expressJwt, bcrypt, jwt, vehicleApi, express, dotenv, prisma, security, userApi, bodyParser };
