@@ -40,7 +40,7 @@ export default class Security {
 				}
 				return null;
 			},
-		}).unless({ path: ['/user/login', '/user/register', /\/*test*/] });
+		}).unless({ path: ['/user/login', '/user/register', /\/*test*/, /\/*public*/] });
 	}
 	useErrorHandler() {
 		return (err, req, res, next) => {

@@ -86,7 +86,7 @@ CREATE TABLE if not exists receipt(
   currencyCode TEXT NOT NULL,
   dateDue DATETIME NOT NULL DEFAULT (datetime('now', '1 month')),
   pkReceiptStatus INT REFERENCES receiptStatus(pkReceiptStatus),
-  currentlyPaid   TEXT NOT NULL DEFAULT ('0.00'),
+  currentlyPaid TEXT NOT NULL DEFAULT ('0.00'),
   isPaid INT DEFAULT (0)
 );
 
@@ -224,7 +224,8 @@ insert into
 VALUES
   ('Waiting'),
   ('Paid'),
-  ('Late');
+  ('Late'),
+  ('Due');
 
 insert into
   receipt(pkRent, price, currencyCode, pkReceiptStatus)

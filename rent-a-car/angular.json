@@ -34,8 +34,8 @@
               "src/assets/primeng/mdc-light-indigo/theme.css",
               "src/assets/primeng/primeng.min.css",
               "node_modules/primeicons/primeicons.css",
-              "src/styles.scss"
-
+              "src/styles.scss",
+              "node_modules/material-icons/iconfont/material-icons.css"
             ],
             "scripts": []
           },

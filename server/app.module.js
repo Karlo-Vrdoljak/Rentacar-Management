@@ -10,5 +10,6 @@ import userApi from './src/api/user.js';
 import vehicleApi from './src/api/vehicle.js';
 import consts from './src/consts/consts.js';
 import Security from './src/security/security.js';
+import cors from 'cors';
 const security = new Security();
-export { rentApi, consts, expressJwt, bcrypt, jwt, vehicleApi, express, dotenv, prisma, security, userApi, bodyParser };
+export { cors, rentApi, consts, expressJwt, bcrypt, jwt, vehicleApi, express, dotenv, prisma, security, userApi, bodyParser };

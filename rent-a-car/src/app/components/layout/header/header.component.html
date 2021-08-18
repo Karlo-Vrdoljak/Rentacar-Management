@@ -1,0 +1,14 @@
+<header class="w-full p-3 lg:p-6 shadow-md bg-gray-200">
+	<div class="container mx-auto flex flex-row items-center justify-between flex-wrap">
+		<div class="flex items-center w-full lg:w-auto fadeinleft animation-duration-300">
+			<h1 class="text-xl lg:text-3xl font-semibold lg:font-black text-green-900 text-opacity-80">{{ header }}</h1>
+		</div>
+		<div *ngIf="isSearch" class="flex items-center w-full lg:w-auto fadeinright animation-duration-300">
+			<span class="p-float-label p-input-icon-right">
+				<i class="pi pi-search"></i>
+				<input id="float-input" type="text" pInputText formControlName="search" />
+				<label for="float-input">Search</label>
+			</span>
+		</div>
+	</div>
+</header>

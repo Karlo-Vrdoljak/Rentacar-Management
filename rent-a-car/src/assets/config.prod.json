@@ -1,5 +1,6 @@
 {
 	"version": "1.0.0",
-	"production": true
+	"production": true,
+	"API_URL": "http://localhost:3000/"
 
 }

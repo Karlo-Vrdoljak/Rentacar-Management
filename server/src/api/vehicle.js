@@ -10,6 +10,10 @@ router.get('/all', async (req, res) => {
 	res.send(await prisma.vehicle.findMany({ include: { vehicleStatus: true } }));
 });
 
+router.get('/public/available', async (req, res) => {
+	res.send(await prisma.vehicle.findMany({ where: { pkStatus: consts.VEHICLE_STATUS.Available }, include: { vehicleStatus: true } }));
+});
+
 router.put('/update/status', async (req, res) => {
 	const { pkVehicle, pkVehicleStatus } = req.body;
 	res.send(
@@ -85,7 +89,7 @@ router.delete('/one', async (req, res, next) => {
 	const { pkVehicle } = req.query;
 	try {
 		await prisma.vehicle.delete({ where: { pkVehicle } });
-		res.send({pkVehicle});
+		res.send({ pkVehicle });
 	} catch (error) {
 		next(error);
 	}

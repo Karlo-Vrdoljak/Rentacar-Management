@@ -1,10 +1,12 @@
-import { bodyParser, consts, dotenv, express, rentApi, security, userApi, vehicleApi } from './app.module.js';
+import { cors, bodyParser, consts, dotenv, express, rentApi, security, userApi, vehicleApi } from './app.module.js';
 import findLateReceiptsCRON from './src/cron/findLateReceipts.js';
 
 dotenv.config();
 
 const app = express();
 const port = process.env.PORT; // default port to listen
+
+app.use(cors());
 
 app.use(bodyParser.json());
 
