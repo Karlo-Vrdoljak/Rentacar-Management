@@ -1,5 +1,7 @@
 {
 	"version": "1.0.0",
 	"production": false,
-	"API_URL": "http://localhost:3000/"
+	"API_URL": "http://localhost:3000/",
+	"AUTO_COMPLETE_API": "https://api.geoapify.com/v1/geocode/autocomplete?apiKey=048f59eef0fc42d6a29fa96e08978a7c&text=",
+	"IMAGE_SEARCH_API": "https://pixabay.com/api/?key=22985680-1202a3177a2c02dfa6428aa5c&image_type=photo&pretty=true&q="
 }

@@ -34,7 +34,7 @@ router.post('/login', async (req, res, next) => {
 	}
 	const isMatched = await security.checkHash(password, user.password);
 	if (isMatched) {
-		res.send(security.signJwt(user));
+		res.send({ jwt: security.signJwt(user) });
 	} else {
 		return next(consts.ERRORS.InvalidCredentials);
 	}
@@ -109,11 +109,7 @@ router.put('/password', async (req, res) => {
 		const user = await prisma.user.update({
 			where: { ...(email && { email }), ...(pkUser && { pkUser: pkUser }) },
 			data: {
-				...(name && { name }),
-				...(lastName && { lastName }),
-				...(phone && { phone }),
-				...(address && { address }),
-				...(claims && { claims }),
+				...(password && { password: security.hashString(password) }),
 			},
 		});
 		res.send(user);

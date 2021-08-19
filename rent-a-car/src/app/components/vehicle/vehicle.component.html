@@ -1,4 +1,7 @@
-<div class="relative">
+<div class="relative mx-auto">
+	<div class="w-full h-32 lg:h-52">
+		<img class="w-full h-32 lg:h-52 object-cover rounded-t-lg" [src]="imgSrc" alt="Mountain" />
+	</div>
 	<div class="w-full text-lg font-sans p-2 lg:p-4">
 		<div class="font-semibold text-gray-800 flex flex-row flex-wrap items-center">
 			<div class="flex flex-row pr-2 items-center">{{ vehicle.manufacturer }}</div>
@@ -6,30 +9,58 @@
 			<div class="flex flex-row text-sm text-gray-600 w-full items-center">{{ vehicle.code }}</div>
 		</div>
 		<div class="flex flex-row items-center">
-			<div class="flex flex-col pt-6 pb-2 text-base justify-start text-gray-800">
-				<div class="flex items-center w-full">
-					<div class="flex items-center pr-2"><span class="material-icons text-green-800">local_gas_station</span></div>
-					<div class="flex items-center font-semibold">{{ vehicle.gasType }}</div>
+			<ng-container *ngIf="!large; else rowView">
+				<div class="flex flex-col pt-6 pb-2 text-base justify-start text-gray-800">
+					<div class="flex items-center w-full">
+						<div class="flex items-center pr-2"><span class="material-icons text-green-800">local_gas_station</span></div>
+						<div class="flex items-center font-semibold">{{ vehicle.gasType }}</div>
+					</div>
+					<div class="flex items-center w-full">
+						<div class="flex items-center pr-2"><span class="material-icons text-green-800">palette</span></div>
+						<div class="flex items-center font-semibold">{{ vehicle.color }}</div>
+					</div>
+					<div class="flex items-center w-full">
+						<div class="flex items-center pr-2"><span class="material-icons text-green-800">explore</span></div>
+						<div class="flex items-center font-semibold">{{ vehicle.currentKilometers }}</div>
+					</div>
+					<div class="flex items-center w-full">
+						<div class="flex items-center pr-2"><span class="material-icons text-green-800">construction</span></div>
+						<div class="flex items-center font-semibold">{{ vehicle.dateOfManufacture | date: 'dd. MM. yyyy.' }}</div>
+					</div>
 				</div>
-				<div class="flex items-center w-full">
-					<div class="flex items-center pr-2"><span class="material-icons text-green-800">palette</span></div>
-					<div class="flex items-center font-semibold">{{ vehicle.color }}</div>
-				</div>
-				<div class="flex items-center w-full">
-					<div class="flex items-center pr-2"><span class="material-icons text-green-800">explore</span></div>
-					<div class="flex items-center font-semibold">{{ vehicle.currentKilometers }}</div>
-				</div>
-				<div class="flex items-center w-full">
-					<div class="flex items-center pr-2"><span class="material-icons text-green-800">construction</span></div>
-					<div class="flex items-center font-semibold">{{ vehicle.dateOfManufacture | date }}</div>
-				</div>
-			</div>
+			</ng-container>
+		</div>
+		<div *ngIf="button" class="w-full flex-row flex-wrap pt-4 items-center">
+			<a [routerLink]="['/vehicle/rent/' + vehicle.pkVehicle]">
+				<button class="w-full" pRipple label="Rent it" pButton type="button" icon="pi pi-check" iconPos="left"></button>
+			</a>
 		</div>
 	</div>
-	<div class="absolute top-5 -right-2 h-4 w-4">
+	<div *ngIf="vehicle?.vehicleStatus?.pkVehicleStatus == 2" class="absolute top-5 -right-2 h-4 w-4">
 		<span class="flex h-4 w-4">
 			<span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-blue-400 opacity-75"></span>
 			<span class="relative inline-flex rounded-full h-4 w-4 bg-blue-500"></span>
 		</span>
 	</div>
 </div>
+
+<ng-template #rowView>
+	<div class="flex flex-col lg:flex-row flex-wrap lg:w-full lg:justify-between pt-6 pb-2 text-base justify-start text-gray-800">
+		<div class="flex items-center w-full lg:w-1/4">
+			<div class="flex items-center pr-2"><span class="material-icons text-green-800">local_gas_station</span></div>
+			<div class="flex items-center font-semibold">{{ vehicle.gasType }}</div>
+		</div>
+		<div class="flex items-center w-full lg:w-1/4">
+			<div class="flex items-center pr-2"><span class="material-icons text-green-800">palette</span></div>
+			<div class="flex items-center font-semibold">{{ vehicle.color }}</div>
+		</div>
+		<div class="flex items-center w-full lg:w-1/4">
+			<div class="flex items-center pr-2"><span class="material-icons text-green-800">explore</span></div>
+			<div class="flex items-center font-semibold">{{ vehicle.currentKilometers }}</div>
+		</div>
+		<div class="flex items-center w-full lg:w-1/4">
+			<div class="flex items-center pr-2"><span class="material-icons text-green-800">construction</span></div>
+			<div class="flex items-center font-semibold">{{ vehicle.dateOfManufacture | date: 'dd. MM. yyyy.' }}</div>
+		</div>
+	</div>
+</ng-template>

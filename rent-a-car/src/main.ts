@@ -3,7 +3,7 @@ import { platformBrowserDynamic } from '@angular/platform-browser-dynamic';
 import { APP_CONFIG } from 'src/app/_services/appConfig';
 import { AppModule } from './app/app.module';
 import { environment } from './environments/environment';
-
+// import '@angular/compiler';
 
 fetch(environment.production ? '/assets/config.prod.json' : '/assets/config.json')
 	.then((response) => response.json())

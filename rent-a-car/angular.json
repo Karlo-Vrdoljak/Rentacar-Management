@@ -37,7 +37,8 @@
               "src/styles.scss",
               "node_modules/material-icons/iconfont/material-icons.css"
             ],
-            "scripts": []
+            "scripts": [
+            ]
           },
           "configurations": {
             "production": {

@@ -1,0 +1,30 @@
+<div class="flex items-center justify-center">
+	<div class="p-4 w-full max-w-2xl">
+		<div class="text-center mb-5">
+			<!-- <img src="assets/images/blocks/logos/hyper.svg" alt="Image" height="50" class="mb-3" /> -->
+			<div class="text-gray-900 text-3xl font-medium mb-3">Welcome Back</div>
+			<span class="text-gray-600 font-medium">Don't have an account?</span>
+			<a [routerLink]="['/register']" (click)="handleRegisterClick()" class="font-medium no-underline ml-2 text-blue-500 cursor-pointer">Create today!</a>
+		</div>
+
+		<div>
+			<form [formGroup]="login">
+				<label for="email" class="block text-gray-900 font-medium mb-2">Email</label>
+				<input required id="email" formControlName="email" type="text" pInputText class="w-full mb-3" />
+
+				<label for="password" class="block text-gray-900 font-medium mb-2">Password</label>
+				<input required id="password" formControlName="password" type="password" pInputText class="w-full mb-3" />
+
+				<div class="flex items-center justify-between mb-6">
+					<div class="flex items-center p-field-checkbox">
+						<p-checkbox formControlName="rememberMe" inputId="rememberme" [binary]="true" styleClass="mr-2"></p-checkbox>
+						<label class="cursor-pointer" for="rememberme">Remember me</label>
+					</div>
+					<!-- <a class="font-medium no-underline ml-2 text-blue-500 text-right cursor-pointer">Forgot your password?</a> -->
+				</div>
+			</form>
+
+			<button (click)="signIn()" pButton pRipple label="Sign In" icon="pi pi-user" class="w-full"></button>
+		</div>
+	</div>
+</div>

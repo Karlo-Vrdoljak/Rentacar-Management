@@ -1,0 +1,53 @@
+<app-header [header]="'Rent  ' + vehicle?.manufacturer + ' ' + vehicle?.model"></app-header>
+
+<section class="text-gray-600 body-font relative">
+	<div class="container px-8 lg:px-16 py-16 mx-auto flex flex-col lg:flex-row w-full">
+		<div class="w-full rounded-md shadow-lg bg-gray-50 mb-8 lg:mb-0 bg-opacity-90">
+			<div class="flex flex-col text-center w-full mb-12 p-4">
+				<h1 class="sm:text-3xl py-8 text-2xl font-medium title-font mb-4 text-gray-900">Rent your vehicle by simply filling in the info below</h1>
+				<p class="lg:w-2/3 mx-auto leading-relaxed text-base">When you complete the rental request we will bring the vehicle to you.</p>
+			</div>
+			<form [formGroup]="rentVehicle">
+				<div class="container mx-auto px-3 sm:px-6 max-w-2xl">
+					<div class="flex flex-col">
+						<div class="py-2">
+							<span class="p-float-label w-full">
+								<p-calendar styleClass="w-full" inputStyleClass="w-full" formControlName="dates" [showIcon]="true" dateFormat="dd.mm.yy" selectionMode="range" [readonlyInput]="true" inputId="range"></p-calendar>
+								<label for="">Rent period</label>
+							</span>
+						</div>
+						<div class="py-2 pb-16">
+							<span class="p-float-label w-full">
+								<p-autoComplete styleClass="w-full" inputStyleClass="w-full" formControlName="location" [suggestions]="autocomplete" (completeMethod)="fetchAutoComplete($event)"></p-autoComplete>
+								<!-- <i class="pi pi-map-marker"></i> -->
+								<label for="">Pickup location</label>
+							</span>
+						</div>
+						<button (click)="confirmPopup($event)" [loading]="loader.isLoading" [disabled]="uiSubmit" class="p-button-raised" pRipple label="Confrim rent" pButton type="button" icon="pi pi-check-circle" iconPos="left"></button>
+					</div>
+				</div>
+			</form>
+			<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1440 320"><path fill="rgb(219, 234, 254)" fill-opacity="1" d="M0,256L48,261.3C96,267,192,277,288,282.7C384,288,480,288,576,282.7C672,277,768,267,864,256C960,245,1056,235,1152,202.7C1248,171,1344,117,1392,90.7L1440,64L1440,320L1392,320C1344,320,1248,320,1152,320C1056,320,960,320,864,320C768,320,672,320,576,320C480,320,384,320,288,320C192,320,96,320,48,320L0,320Z"></path></svg>
+			<div class="flex flex-row text-center bg-blue-100 justify-start px-6 rounded-lg py-6 w-full">
+				<app-vehicle [large]="true" [vehicle]="vehicle" [button]="false" class="mx-auto w-full sm:w-1/2 rounded-lg bg-white"></app-vehicle>
+				<div class="hidden lg:flex lg:w-1/2">
+					<ng-container [ngTemplateOutlet]="mapref"></ng-container>
+				</div>
+			</div>
+		</div>
+		<div class="lg:hidden">
+			<ng-container [ngTemplateOutlet]="mapref"></ng-container>
+		</div>
+	</div>
+</section>
+
+<ng-template #mapref>
+	<div class="opacity-90 flex lg:pl-8 flex-col max-w-lg mx-auto rounded-md">
+		<div class="w-full shadow-xl">
+			<img class="w-full object-cover rounded-t-md" src="assets/images/location.png" alt="we are here" />
+			<div class="w-full flex flex-col bg-gray-900 rounded-b-md text-white tracking-wide font-sans p-4">
+				<div>We are stationed at Croatia, 21000 Split, Stinice 52</div>
+			</div>
+		</div>
+	</div>
+</ng-template>

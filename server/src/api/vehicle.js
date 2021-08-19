@@ -10,6 +10,11 @@ router.get('/all', async (req, res) => {
 	res.send(await prisma.vehicle.findMany({ include: { vehicleStatus: true } }));
 });
 
+router.get('/public/one', async (req, res) => {
+	const { pkVehicle } = req.query;
+	res.send(await prisma.vehicle.findUnique({ where: { pkVehicle }, include: { vehicleStatus: true } }));
+});
+
 router.get('/public/available', async (req, res) => {
 	res.send(await prisma.vehicle.findMany({ where: { pkStatus: consts.VEHICLE_STATUS.Available }, include: { vehicleStatus: true } }));
 });

@@ -15,4 +15,10 @@ export class VehicleService {
 	getAllVehiclesAvailable() {
 		return this.httpClient.get(this.config.value.API_URL + SLUG + '/public/available');
 	}
+	getOne({ pkVehicle }) {
+		const req = {
+			pkVehicle,
+		};
+		return this.httpClient.get(this.config.value.API_URL + SLUG + '/public/one', { params: req });
+	}
 }

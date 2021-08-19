@@ -1,6 +1,5 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
-import { VehicleService } from './../../_services/vehicle.service';
 
 @Component({
 	selector: 'app-home',
