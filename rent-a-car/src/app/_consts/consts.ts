@@ -55,3 +55,65 @@ export interface User {
 	phone: string;
 	pkUser: number;
 }
+
+export enum VEHICLE_STATUS {
+	Service = 1,
+	Available = 2,
+	Rented = 3,
+	NotAvailable = 4,
+	ServiceColor = 'red-400',
+	AvailableColor = 'blue-400',
+	RentedColor = 'green-400',
+	NotAvailableColor = 'gray-500',
+}
+export enum RECEIPT_STATUS {
+	Waiting = 1,
+	Paid = 2,
+	Late = 3,
+	Due = 4,
+}
+
+export enum RENT_STATUS {
+	Queued = 1,
+	Started = 2,
+	Complete = 3,
+	Late = 4,
+	QueuedColor = 'gray-500',
+	StartedColor = 'blue-400',
+	CompleteColor = 'green-400',
+	LateColor = 'red-400',
+}
+
+export interface UserRentStats {
+	pkUser?: number;
+	rentCount?: number;
+	receiptCount?: number;
+	receiptsPaidCount?: any;
+	priceTotal?: any;
+	paidTotal?: any;
+}
+
+export interface RentStatus {
+	pkRentStatus: number;
+	createdAt: Date;
+	changedAt: Date;
+	name: string;
+}
+
+export interface Rent {
+	pkRent: number;
+	createdAt: Date;
+	changedAt: Date;
+	pkVehicle: number;
+	pkUserEntry: number;
+	pkUserRented: number;
+	pkRentStatus: number;
+	rentFrom: Date;
+	rentTo: Date;
+	rentCompleteKilometers?: any;
+	pickupLocation: string;
+	dropOffLocation?: any;
+	vehicle: Vehicle;
+	receipt: any[];
+	rentStatus: RentStatus;
+}

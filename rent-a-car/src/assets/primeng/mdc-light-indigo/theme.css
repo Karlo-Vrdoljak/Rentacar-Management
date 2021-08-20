@@ -6847,3 +6847,9 @@ p-multiselect.ng-dirty.ng-invalid .p-multiselect:not(.p-disabled).p-focus {
 }
 
 /* Customizations to the designer theme should be defined here */
+
+.p-menuitem-link-active {
+  color: var(--accent-color-text);
+  background: rgba(var(--accent-color-rgb),0.2);
+  transition: color,background 0.2s cubic-bezier(0.075, 0.82, 0.165, 1);
+}

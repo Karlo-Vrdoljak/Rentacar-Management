@@ -19,6 +19,11 @@ const ERRORS = {
 		message: 'You have missing required properties',
 		status: 600,
 	},
+	AlreadyRented: {
+		name: 'AlreadyRented',
+		message: 'We are sorry, the vehicle is already rented by someone else a second ago!',
+		status: 600,
+	},
 };
 
 const handleNumeric = (input) => {
@@ -91,7 +96,13 @@ const RECEIPT_STATUS = {
 	Waiting: 1,
 	Paid: 2,
 	Late: 3,
-	Due: 4
+	Due: 4,
+};
+const RENT_STATUS = {
+	Queued: 1,
+	Started: 2,
+	Complete: 3,
+	Late: 4,
 };
 /**
  *
@@ -110,4 +121,4 @@ function makeCurrencyString(value) {
 	return value.toFixed(2);
 }
 
-export default { RECEIPT_STATUS, makeCurrencyString, PAY_TOLERANCE, ERRORS, handleNumeric, useQueryParser, isNumber, VEHICLE_STATUS, toTitleCase, parseCurrency };
+export default { RENT_STATUS, RECEIPT_STATUS, makeCurrencyString, PAY_TOLERANCE, ERRORS, handleNumeric, useQueryParser, isNumber, VEHICLE_STATUS, toTitleCase, parseCurrency };

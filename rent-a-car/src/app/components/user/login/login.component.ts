@@ -43,14 +43,13 @@ export class LoginComponent implements OnInit {
 			.pipe(takeUntil(this.destroy))
 			.subscribe(
 				({ jwt }) => {
-					this.loader.stop(`Welcome back ${this.auth.user?.name} ${this.auth.user?.lastName}!`);
-
 					const { rememberMe } = this.login.value;
 					if (rememberMe) {
 						this.auth.saveLocal(jwt);
 					}
 					this.auth.user = this.auth.parseJwt(jwt);
 					this.config.nextInteraction({ id: EInteractionReducer.loggedIn, args: this.auth.user });
+					this.loader.stop(`Welcome back ${this.auth.user?.name} ${this.auth.user?.lastName}!`);
 
 					this.dialogRef?.ref.close({ user: this.auth.user });
 				},

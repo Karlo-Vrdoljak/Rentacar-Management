@@ -1,6 +1,8 @@
 import { Component, OnDestroy } from '@angular/core';
 import { ConfirmationService, MessageService } from 'primeng/api';
 import { Subject } from 'rxjs';
+import { ONE_SECOND, RENT_STATUS, VEHICLE_STATUS } from '../_consts/consts';
+import { RECEIPT_STATUS } from './../_consts/consts';
 
 @Component({
 	template: '',
@@ -26,12 +28,28 @@ export abstract class BaseClass implements OnDestroy {
 	}
 	showToast({ toast, severity = 'success', summary = 'Success', detail = 'Changes saved!' }: { toast: MessageService; severity?: string; summary?: string; detail?: string }) {
 		toast.clear();
-		toast.add({ severity, summary, detail });
+		toast.add({ severity, summary, detail, life: ONE_SECOND * 5 });
 	}
 	nextMonth() {
 		const d = new Date();
 		d.setDate(d.getDate() + 31);
 		return d;
 	}
+	get vehicleStatus() {
+		return VEHICLE_STATUS;
+	}
+	get receiptStatus() {
+		return RECEIPT_STATUS;
+	}
+	get rentStatus() {
+		return RENT_STATUS;
+	}
 
+	sentenceCase(text: string) {
+		const result = text.replace(/([A-Z])/g, ' $1');
+		return result.charAt(0).toUpperCase() + result.slice(1);
+	}
+	isValidDate(date) {
+		return !isNaN(Date.parse(date));
+	}
 }

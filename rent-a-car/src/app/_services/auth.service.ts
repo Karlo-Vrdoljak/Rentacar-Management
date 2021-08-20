@@ -4,6 +4,7 @@ import { Config } from 'src/app/_services/config';
 import { Observable } from 'rxjs';
 import { ELocalStorage } from '../_consts/consts';
 import { User } from './../_consts/consts';
+import { EInteractionReducer } from 'src/app/_consts/consts';
 
 const USER = 'user';
 
@@ -55,6 +56,7 @@ export class AuthService {
 	logoff(reload = true) {
 		this.clearAuth();
 		this.user = null;
-		reload && window.location.reload();
+		this.config.nextInteraction({ id: EInteractionReducer.logoff });
+		// reload && window.location.reload();
 	}
 }

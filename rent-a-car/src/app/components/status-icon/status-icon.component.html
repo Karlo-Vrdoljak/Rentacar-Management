@@ -1,0 +1,52 @@
+<ng-container *ngIf="symbolFor == 'vehicle'">
+	<div *ngIf="status == vehicleStatus.Service" class="absolute top-5 -right-2 h-4 w-4">
+		<span pTooltip="In service" class="flex h-4 w-4">
+			<span [class]="'animate-ping absolute inline-flex h-full w-full rounded-full opacity-75 ' + 'bg-' + vehicleStatus.ServiceColor"></span>
+			<span [class]="'relative inline-flex rounded-full h-4 w-4 ' + 'bg-' + vehicleStatus.ServiceColor"></span>
+		</span>
+	</div>
+	<div *ngIf="status == vehicleStatus.Available" class="absolute top-5 -right-2 h-4 w-4">
+		<span pTooltip="Available" class="flex h-4 w-4">
+			<span [class]="'animate-ping absolute inline-flex h-full w-full rounded-full opacity-75 ' + 'bg-' + vehicleStatus.AvailableColor"></span>
+			<span [class]="'relative inline-flex rounded-full h-4 w-4 ' + 'bg-' + vehicleStatus.AvailableColor"></span>
+		</span>
+	</div>
+	<div *ngIf="status == vehicleStatus.Rented" class="absolute top-5 -right-2 h-4 w-4">
+		<span pTooltip="Rented" class="flex h-4 w-4">
+			<span [class]="'animate-ping absolute inline-flex h-full w-full rounded-full opacity-75 ' + 'bg-' + vehicleStatus.RentedColor"></span>
+			<span [class]="'relative inline-flex rounded-full h-4 w-4 ' + 'bg-' + vehicleStatus.RentedColor"></span>
+		</span>
+	</div>
+	<div *ngIf="status == vehicleStatus.NotAvailable" class="absolute top-5 -right-2 h-4 w-4">
+		<span pTooltip="Not available" class="flex h-4 w-4">
+			<span [class]="'animate-ping absolute inline-flex h-full w-full rounded-full opacity-75 ' + 'bg-' + vehicleStatus.NotAvailableColor"></span>
+			<span [class]="'relative inline-flex rounded-full h-4 w-4 ' + 'bg-' + vehicleStatus.NotAvailableColor"></span>
+		</span>
+	</div>
+</ng-container>
+<ng-container *ngIf="symbolFor == 'rent'">
+	<div *ngIf="status == rentStatus.Queued" class="absolute top-5 -right-2 h-4 w-4">
+		<span pTooltip="In queue" class="flex h-4 w-4">
+			<span [class]="'animate-ping absolute inline-flex h-full w-full rounded-full opacity-75 ' + 'bg-' + rentStatus.QueuedColor"></span>
+			<span [class]="'relative inline-flex rounded-full h-4 w-4 ' + 'bg-' + rentStatus.QueuedColor"></span>
+		</span>
+	</div>
+	<div *ngIf="status == rentStatus.Started" class="absolute top-5 -right-2 h-4 w-4">
+		<span pTooltip="In rent" class="flex h-4 w-4">
+			<span [class]="'animate-ping absolute inline-flex h-full w-full rounded-full opacity-75 ' + 'bg-' + rentStatus.StartedColor"></span>
+			<span [class]="'relative inline-flex rounded-full h-4 w-4 ' + 'bg-' + rentStatus.StartedColor"></span>
+		</span>
+	</div>
+	<div *ngIf="status == rentStatus.Complete" class="absolute top-5 -right-2 h-4 w-4">
+		<span pTooltip="Completed" class="flex h-4 w-4">
+			<span [class]="'animate-ping absolute inline-flex h-full w-full rounded-full opacity-75 ' + 'bg-' + rentStatus.CompleteColor"></span>
+			<span [class]="'relative inline-flex rounded-full h-4 w-4 ' + 'bg-' + rentStatus.CompleteColor"></span>
+		</span>
+	</div>
+	<div *ngIf="status == rentStatus.Late" class="absolute top-5 -right-2 h-4 w-4">
+		<span pTooltip="Late" class="flex h-4 w-4">
+			<span [class]="'animate-ping absolute inline-flex h-full w-full rounded-full opacity-75 ' + 'bg-' + rentStatus.LateColor"></span>
+			<span [class]="'relative inline-flex rounded-full h-4 w-4 ' + 'bg-' + rentStatus.LateColor"></span>
+		</span>
+	</div>
+</ng-container>

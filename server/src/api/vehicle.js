@@ -19,6 +19,11 @@ router.get('/public/available', async (req, res) => {
 	res.send(await prisma.vehicle.findMany({ where: { pkStatus: consts.VEHICLE_STATUS.Available }, include: { vehicleStatus: true } }));
 });
 
+router.get('/user/vehicles', async (req, res) => {
+	const { pkUser } = req.query;
+	res.send(await prisma.rent.findMany({ where: { pkUserRented: pkUser }, include: { vehicle: { include: { vehicleStatus: true } }, receipt: true, rentStatus: true }, orderBy: { pkRentStatus: 'asc' } }));
+});
+
 router.put('/update/status', async (req, res) => {
 	const { pkVehicle, pkVehicleStatus } = req.body;
 	res.send(

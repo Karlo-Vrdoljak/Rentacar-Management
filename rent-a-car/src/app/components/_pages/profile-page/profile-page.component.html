@@ -1,0 +1,62 @@
+<div class="container max-w-7xl mx-auto p-4 md:p-8 pt-12 scalein animation-duration-300">
+	<div class="bg-white shadow-lg rounded-lg">
+		<div class="flex items-start flex-col lg:justify-between lg:flex-row p-6">
+			<div>
+				<div class="font-medium text-3xl text-gray-900">{{ user.name }} {{ user.lastName }}</div>
+				<div class="flex items-center text-gray-700 flex-wrap">
+					<div class="mr-5 flex items-center mt-3">
+						<i class="pi pi-users mr-2"></i>
+						<span>Rented {{ stats.rentCount ?? 0 }} time(s)</span>
+					</div>
+					<div class="mr-5 flex items-center mt-3">
+						<i class="pi pi-dollar mr-2"></i>
+						<span>Paid {{ stats.paidTotal ?? 0 }} of {{ stats.priceTotal ?? 0 }}</span>
+					</div>
+					<!-- <div class="flex items-center mt-3">
+						<i class="pi pi-clock mr-2"></i>
+						<span>2.32m Avg. Duration</span>
+					</div> -->
+				</div>
+			</div>
+			<div class="mt-3 lg:mt-0">
+				<button pButton pRipple label="Add" class="p-button-outlined mr-2" icon="pi pi-user-plus"></button>
+				<button pButton pRipple label="Save" icon="pi pi-check"></button>
+			</div>
+		</div>
+	</div>
+</div>
+
+<div class="container max-w-7xl mx-auto p-4 md:p-8 pt-12 scalein animation-duration-300">
+	<div class="grid w-full">
+		<div class="col-12 lg:col-6" *ngFor="let r of rents">
+			<div class="bg-white p-4 shadow-lg rounded-lg relative">
+				<div class="p-2">
+					<div class="text-3xl font-medium text-gray-900 mb-3"><span class="font-normal">Renting from </span>{{ r.rentFrom | date: 'dd. MM. yyyy.' }}</div>
+					<ng-container *ngFor="let item of iterateRent(r)">
+						<ng-container [ngTemplateOutlet]="listItem" [ngTemplateOutletContext]="{ value: r[item.key], label: item.label }"></ng-container>
+					</ng-container>
+					<ng-container [ngTemplateOutlet]="listItem" [ngTemplateOutletContext]="{ value: r?.rentStatus?.name, label: 'Rent status' }">
+						<app-status-icon *ngIf="r?.rentStatus?.pkRentStatus" [symbolFor]="'rent'" [status]="r?.rentStatus?.pkRentStatus"></app-status-icon>
+					</ng-container>
+					<div class="text-base bg-gray-50 px-2 rounded-xl shadow-md flex flex-wrap text-gray-600">
+						<div [class]="'tracking-wide text-' + rentStatus.QueuedColor" *ngIf="r?.rentStatus?.pkRentStatus == rentStatus.Queued">We will procces your request, and contact you when the vehicle is ready for you!</div>
+						<div [class]="'tracking-wide font-semibold text-' + rentStatus.StartedColor" *ngIf="r?.rentStatus?.pkRentStatus == rentStatus.Started">Hope you like the car. 😊</div>
+						<div [class]="'tracking-wide font-semibold text-' + rentStatus.CompleteColor" *ngIf="r?.rentStatus?.pkRentStatus == rentStatus.Complete">You finished this one with flying colors!</div>
+						<div [class]="'tracking-wide font-bold text-' + rentStatus.LateColor" *ngIf="r?.rentStatus?.pkRentStatus == rentStatus.Late">Please contact us regarding your payment plan! You should have received the invoice by now.</div>
+					</div>
+				</div>
+				<div class="border-2 border-dashed border-300 rounded-lg">
+					<app-vehicle class="max-w-sm" [button]="false" [vehicle]="r.vehicle"></app-vehicle>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+
+<ng-template #listItem let-value="value" let-label="label">
+	<ng-content></ng-content>
+	<div *ngIf="value" class="font-medium text-sm md:text-base mb-3 flex flex-row w-full">
+		<div class="flex w-1/4 items-center font-normal pr-2">{{ label }}</div>
+		<div class="flex w-3/4 items-center flex-wrap">{{ isValidDate(value) ? (value | date: 'dd. MM. yyyy.') : value }}</div>
+	</div>
+</ng-template>

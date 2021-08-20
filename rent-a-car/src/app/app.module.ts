@@ -30,6 +30,12 @@ import { AppHttpInterceptor } from './_interceptors/app.interceptor';
 import { CheckboxModule } from 'primeng/checkbox';
 import { HomeComponent } from './components/_pages/home/home.component';
 import { LoginPageComponent } from './components/_pages/login-page/login-page.component';
+import { NgxFormErrorModule } from 'ngx-form-error';
+import { MenubarModule } from 'primeng/menubar';
+import { TooltipModule } from 'primeng/tooltip';
+import { ProfilePageComponent } from './components/_pages/profile-page/profile-page.component';
+import { HttpErrorInterceptor } from './_interceptors/error.interceptor';
+import { StatusIconComponent } from './components/status-icon/status-icon.component';
 
 const ngxUiLoaderConfig: NgxUiLoaderConfig = {
 	bgsColor: '#95B7FF',
@@ -46,12 +52,17 @@ const ngxUiLoaderConfig: NgxUiLoaderConfig = {
 };
 
 @NgModule({
-	declarations: [AppComponent, NavComponent, FooterComponent, HeaderComponent, HomeComponent, VehicleComponent, RentVehicleComponent, LoginComponent, RegisterComponent, LoginDialogComponent, LoginPageComponent],
-	imports: [CheckboxModule, DynamicDialogModule, ConfirmPopupModule, ToastModule, NgxUiLoaderModule.forRoot(ngxUiLoaderConfig), NgxUiLoaderRouterModule.forRoot({ showForeground: false }), ScrollingModule, AutoCompleteModule, BrowserAnimationsModule, CalendarModule, FormsModule, ReactiveFormsModule, HttpClientModule, ToolbarModule, RippleModule, ButtonModule, BrowserModule, AppRoutingModule, InputTextModule],
+	declarations: [AppComponent, NavComponent, FooterComponent, HeaderComponent, HomeComponent, VehicleComponent, RentVehicleComponent, LoginComponent, RegisterComponent, LoginDialogComponent, LoginPageComponent, ProfilePageComponent, StatusIconComponent],
+	imports: [TooltipModule, MenubarModule, NgxFormErrorModule, CheckboxModule, DynamicDialogModule, ConfirmPopupModule, ToastModule, NgxUiLoaderModule.forRoot(ngxUiLoaderConfig), NgxUiLoaderRouterModule.forRoot({ showForeground: false }), ScrollingModule, AutoCompleteModule, BrowserAnimationsModule, CalendarModule, FormsModule, ReactiveFormsModule, HttpClientModule, ToolbarModule, RippleModule, ButtonModule, BrowserModule, AppRoutingModule, InputTextModule],
 	providers: [
 		{
 			provide: HTTP_INTERCEPTORS,
 			useClass: AppHttpInterceptor,
+			multi: true,
+		},
+		{
+			provide: HTTP_INTERCEPTORS,
+			useClass: HttpErrorInterceptor,
 			multi: true,
 		},
 		ConfirmationService,

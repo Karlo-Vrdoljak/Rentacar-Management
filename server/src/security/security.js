@@ -26,20 +26,29 @@ export default class Security {
 		}
 	}
 
+	fromHeaderOrQuerystring(req) {
+		if (req.headers.authorization && req.headers.authorization.split(' ')[0] === 'Bearer') {
+			return req.headers.authorization.split(' ')[1];
+		} else if (req.query && req.query.token) {
+			return req.query.token;
+		}
+		return null;
+	}
+
+	useRequestUserMiddleware(req, res, next) {
+		const token = this.fromHeaderOrQuerystring(req);
+		const user = jwt.decode(token);
+		req.user = user?.pkUser ? user : null;
+		next();
+	}
+
 	useJwtMiddleware() {
 		return expressJwt({
 			secret: this.jwtConfig.secret,
 			// requestProperty: 'locals.user',
 			algorithms: ['HS256'],
 
-			getToken: function fromHeaderOrQuerystring(req) {
-				if (req.headers.authorization && req.headers.authorization.split(' ')[0] === 'Bearer') {
-					return req.headers.authorization.split(' ')[1];
-				} else if (req.query && req.query.token) {
-					return req.query.token;
-				}
-				return null;
-			},
+			getToken: (req) => this.fromHeaderOrQuerystring(req),
 		}).unless({ path: ['/user/login', '/user/register', /\/*test*/, /\/*public*/] });
 	}
 	useErrorHandler() {

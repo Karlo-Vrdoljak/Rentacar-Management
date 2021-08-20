@@ -6,7 +6,6 @@
   "type": "module",
   "scripts": {
     "migrate": "npx prisma migrate dev",
-    "seed": "prisma db seed --preview-feature",
     "dbreboot": "npx prisma introspect && npx prisma generate",
     "pi": "npx prisma introspect",
     "pg": "npx prisma generate"

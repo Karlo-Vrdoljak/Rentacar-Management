@@ -15,6 +15,8 @@ app.use(bodyParser.urlencoded({ extended: true }));
 
 app.use(security.useJwtMiddleware());
 
+app.use((req, res, next) => security.useRequestUserMiddleware(req, res, next));
+
 app.use((req, res, next) => consts.useQueryParser(req, res, next));
 
 app.use('/user', userApi);

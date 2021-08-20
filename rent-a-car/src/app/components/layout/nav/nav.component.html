@@ -1,14 +1,18 @@
-<p-toolbar styleClass="shadow-md">
-	<div class="p-toolbar-group-left fadein animation-duration-250">
-		<div class="text-2xl flex font-sans font-black opacity-75 text-green-900">
+<p-menubar styleClass="w-full bg-white shadow-md" [model]="items">
+	<ng-template pTemplate="start">
+		<div class="text-2xl flex items-center relative top-0 justify-center pr-4 font-sans font-black opacity-75 text-green-900">
 			<div class="flex">Rentne</div>
 			<div style="transform: scaleX(-1)">R</div>
 		</div>
-	</div>
-
-	<div class="p-toolbar-group-right">
-		<button pButton pRipple icon="pi pi-search"></button>
-		<button pButton pRipple icon="pi pi-calendar" class="p-button-success"></button>
-		<button pButton pRipple icon="pi pi-times" class="p-button-danger"></button>
-	</div>
-</p-toolbar>
+	</ng-template>
+	<ng-template pTemplate="end">
+		<div class="flex items-center">
+			<div class="flex items-center justify-between px-1">
+				<div class="text-gray-700 font-sans px-1">{{ auth.user?.name }}</div>
+				<div class="text-gray-700 font-sans px-1">{{ auth.user?.lastName }}</div>
+			</div>
+			<button *ngIf="auth.user?.pkUser" pButton pRipple type="button" (click)="handleSignOut()" pTooltip="Sign out" icon="pi pi-sign-out" class="p-button-rounded p-button-text"></button>
+			<button *ngIf="!auth.user?.pkUser" pButton pRipple type="button" (click)="handleLogin()" pTooltip="Sign in" icon="pi pi-sign-in" class="p-button-rounded p-button-text"></button>
+		</div>
+	</ng-template>
+</p-menubar>

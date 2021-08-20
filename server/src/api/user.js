@@ -19,6 +19,30 @@ router.get('/pk', async (req, res) => {
 	}
 });
 
+router.get('/one', async (req, res) => {
+	const { pkUser } = req.query;
+
+	if (pkUser) {
+		res.send((await prisma.user.findUnique({ where: { pkUser: pkUser } })) ?? {});
+	} else {
+		res.send({});
+	}
+});
+
+router.get('/stats', async (req, res) => {
+	const { pkUser } = req.query;
+
+	const [stats] = await prisma.$queryRaw`
+		select distinct u.pkUser, count(r.pkRent) rentCount, count(rt.pkReceipt) receiptCount, sum(rt.isPaid) receiptsPaidCount, sum(rt.price) priceTotal, sum(rt.currentlyPaid) paidTotal from rent r 
+		left join receipt rt on rt.pkRent = r.pkRent
+		left join user u on r.pkUserRented = u.pkUser
+		where pkUser = ${pkUser}
+		group by u.pkUser
+		`;
+
+	res.send(stats);
+});
+
 router.get('/all', async (req, res) => {
 	res.send((await prisma.user.findMany()) ?? []);
 });
