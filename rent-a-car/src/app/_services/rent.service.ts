@@ -22,7 +22,6 @@ interface MakeRent {
 })
 export class RentService {
 	constructor(public httpClient: HttpClient, public config: Config, public auth: AuthService) {
-		console.log(config.value.API_URL);
 	}
 
 	makeRent({ pkVehicleStatus = VEHICLE_STATUS.Rented, pkRent = null, pkVehicle, pkUserRented = this.auth.user?.pkUser ?? null, pkRentStatus = RENT_STATUS.Queued, rentFrom, rentTo, pickupLocation, dropOffLocation }: MakeRent) {

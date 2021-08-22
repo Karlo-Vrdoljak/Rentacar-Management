@@ -1,5 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
+import { Observable } from 'rxjs';
+import { User } from '../_consts/consts';
 import { Config } from './config';
 
 const SLUG = 'user';
@@ -8,9 +10,7 @@ const SLUG = 'user';
 	providedIn: 'root',
 })
 export class UserService {
-	constructor(public httpClient: HttpClient, public config: Config) {
-		console.log(config.value.API_URL);
-	}
+	constructor(public httpClient: HttpClient, public config: Config) {}
 
 	getAll() {
 		return this.httpClient.get(this.config.value.API_URL + SLUG + '/public/available');
@@ -26,5 +26,11 @@ export class UserService {
 			pkUser,
 		};
 		return this.httpClient.get(this.config.value.API_URL + SLUG + '/stats', { params: req });
+	}
+	updateOne(user: User): Observable<any> {
+		const req = {
+			...user,
+		};
+		return this.httpClient.put(this.config.value.API_URL + SLUG + '/update', req);
 	}
 }

@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { Router } from '@angular/router';
+import { ActivatedRoute, NavigationEnd, NavigationStart, Router } from '@angular/router';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 import { BaseClass } from 'src/app/_abstract/base.class';
@@ -16,15 +16,34 @@ export interface LoginPageComponent extends BaseClass {}
 })
 export class LoginPageComponent implements OnInit {
 	@use(BaseClass) this;
+	hasRedirect: boolean;
+	redirectUrl: string;
 
-	constructor(public config: Config, public router: Router, public auth: AuthService) {
+	constructor(public config: Config, public route: ActivatedRoute, public router: Router, public auth: AuthService) {
 		this.destroy = new Subject();
+
+		this.route.queryParams.pipe(takeUntil(this.destroy)).subscribe((qs) => {
+			const { redirect } = qs;
+			this.hasRedirect = !!redirect;
+			this.redirectUrl = redirect;
+		});
+
+		// router.events.pipe(takeUntil(this.destroy)).subscribe((event) => {
+		// 	if (event instanceof NavigationEnd) {
+		// 	}
+		// });
+		// const state = this.router
+		// console.log({ state }, this.router?.getCurrentNavigation()?.extras);
+		// NavigationEnd
+		// NavigationCancel
+		// NavigationError
+		// RoutesRecognized
 	}
 
 	ngOnInit(): void {
 		this.config.currentInteraction.pipe(takeUntil(this.destroy)).subscribe((event) => {
 			if (event.id == EInteractionReducer.loggedIn) {
-				this.router.navigate(['/profile', this.auth.user?.pkUser]);
+				this.hasRedirect ? this.router.navigateByUrl(this.redirectUrl) : this.router.navigate(['/profile', this.auth.user?.pkUser]);
 			}
 		});
 	}

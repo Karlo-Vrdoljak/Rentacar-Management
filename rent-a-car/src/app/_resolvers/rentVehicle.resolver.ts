@@ -12,7 +12,6 @@ export class RentVehicleResolver implements Resolve<any> {
 	constructor(public vehicleService: VehicleService) {}
 	resolve(route: ActivatedRouteSnapshot, state: RouterStateSnapshot) {
 		const { pkVehicle } = route.params;
-		console.log(route.params);
 
 		return forkJoin([this.vehicleService.getOne({ pkVehicle })]).pipe(
 			catchError((err, caught) => {

@@ -1,26 +1,47 @@
 <div class="container max-w-7xl mx-auto p-4 md:p-8 pt-12 scalein animation-duration-300">
 	<div class="bg-white shadow-lg rounded-lg">
 		<div class="flex items-start flex-col lg:justify-between lg:flex-row p-6">
-			<div>
+			<div class="lg:w-10/12">
 				<div class="font-medium text-3xl text-gray-900">{{ user.name }} {{ user.lastName }}</div>
-				<div class="flex items-center text-gray-700 flex-wrap">
+				<div class="flex items-center text-gray-700 flex-wrap w-full">
 					<div class="mr-5 flex items-center mt-3">
 						<i class="pi pi-users mr-2"></i>
-						<span>Rented {{ stats.rentCount ?? 0 }} time(s)</span>
+						<span>Rented {{ stats?.rentCount ?? 0 }} time(s)</span>
 					</div>
 					<div class="mr-5 flex items-center mt-3">
 						<i class="pi pi-dollar mr-2"></i>
-						<span>Paid {{ stats.paidTotal ?? 0 }} of {{ stats.priceTotal ?? 0 }}</span>
+						<span>Paid {{ stats?.paidTotal ?? 0 }} of {{ stats?.priceTotal ?? 0 }}</span>
 					</div>
-					<!-- <div class="flex items-center mt-3">
-						<i class="pi pi-clock mr-2"></i>
-						<span>2.32m Avg. Duration</span>
-					</div> -->
+				</div>
+				<div *ngIf="user" class="flex items-center text-gray-700 flex-wrap w-full">
+					<div class="mr-5 flex items-center mt-3">
+						<i class="pi pi-users mr-2"></i>
+						<span
+							>Address <span class="font-semibold">{{ user?.address ?? '-' }}</span></span
+						>
+					</div>
+					<div class="mr-5 flex items-center mt-3">
+						<i class="pi pi-calendar mr-2"></i>
+						<span
+							>Joined on <span class="font-semibold">{{ user?.createdAt ? (user?.createdAt | date: 'dd. MM. yyyy.') : '-' }}</span></span
+						>
+					</div>
+					<div class="mr-5 flex items-center mt-3">
+						<i class="pi pi-envelope mr-2"></i>
+						<span
+							>Email <span class="font-semibold">{{ user?.email ?? '-' }}</span></span
+						>
+					</div>
+					<div class="mr-5 flex items-center mt-3">
+						<i class="pi pi-phone mr-2"></i>
+						<span
+							>Contact <span class="font-semibold">{{ user?.phone ?? '-' }}</span></span
+						>
+					</div>
 				</div>
 			</div>
-			<div class="mt-3 lg:mt-0">
-				<button pButton pRipple label="Add" class="p-button-outlined mr-2" icon="pi pi-user-plus"></button>
-				<button pButton pRipple label="Save" icon="pi pi-check"></button>
+			<div *ngIf="auth.hasLevel(1, user?.pkUser)" class="mt-3 lg:mt-0 lg:w-2/12 items-center justify-end flex flex-wrap">
+				<button (click)="openEditProfile()" pButton pRipple label="Edit profile" class="p-button-outlined mr-2" icon="pi pi-pencil"></button>
 			</div>
 		</div>
 	</div>
@@ -38,11 +59,31 @@
 					<ng-container [ngTemplateOutlet]="listItem" [ngTemplateOutletContext]="{ value: r?.rentStatus?.name, label: 'Rent status' }">
 						<app-status-icon *ngIf="r?.rentStatus?.pkRentStatus" [symbolFor]="'rent'" [status]="r?.rentStatus?.pkRentStatus"></app-status-icon>
 					</ng-container>
-					<div class="text-base bg-gray-50 px-2 rounded-xl shadow-md flex flex-wrap text-gray-600">
+					<div class="text-base bg-gray-50 px-2 mb-4 rounded-xl shadow-md flex flex-wrap text-gray-600">
 						<div [class]="'tracking-wide text-' + rentStatus.QueuedColor" *ngIf="r?.rentStatus?.pkRentStatus == rentStatus.Queued">We will procces your request, and contact you when the vehicle is ready for you!</div>
 						<div [class]="'tracking-wide font-semibold text-' + rentStatus.StartedColor" *ngIf="r?.rentStatus?.pkRentStatus == rentStatus.Started">Hope you like the car. 😊</div>
 						<div [class]="'tracking-wide font-semibold text-' + rentStatus.CompleteColor" *ngIf="r?.rentStatus?.pkRentStatus == rentStatus.Complete">You finished this one with flying colors!</div>
-						<div [class]="'tracking-wide font-bold text-' + rentStatus.LateColor" *ngIf="r?.rentStatus?.pkRentStatus == rentStatus.Late">Please contact us regarding your payment plan! You should have received the invoice by now.</div>
+						<div [class]="'tracking-wide font-bold text-' + rentStatus.LateColor" *ngIf="r?.rentStatus?.pkRentStatus == rentStatus.Late">Please contact us to we can pick up the vehicle!</div>
+					</div>
+					<div *ngFor="let rec of r.receipt" class="font-medium text-sm md:text-base mb-3 flex flex-wrap flex-row w-full">
+						<div class="flex w-1/4 items-center font-normal pr-2 justify-between">
+							<div>Receipt</div>
+							<i [pTooltip]="rec.isPaid ? 'Paid' : 'Not paid yet!'" [class]="rec.isPaid ? 'pi pi-check-circle text-green-700' : 'pi pi-exclamation-triangle text-red-600'"></i>
+						</div>
+						<div class="flex w-3/4 py-2 items-center flex-wrap justify-between">
+							<div class="flex items-center">
+								<span>Paid {{ rec.currentlyPaid ?? 0 }} of {{ rec.price ?? 0 }}</span>
+							</div>
+							<div class="flex items-center">
+								<span>Payment {{ rec.isPaid ? 'completed' : 'is due up until' }} {{ (rec.isPaid ? rec.changedAt : rec.dateDue) | date: 'dd. MM. yyyy.' }}</span>
+							</div>
+						</div>
+						<div class="text-base bg-gray-50 px-2 my-2 rounded-xl shadow-md flex w-full flex-wrap text-gray-600">
+							<div [class]="'tracking-wide text-' + receiptStatus.WaitingColor" *ngIf="rec.pkReceiptStatus == receiptStatus.Waiting">You will receive the payment plan and receipt in your mailbox when you complete your rent, until then enjoy the car.</div>
+							<div [class]="'tracking-wide font-semibold text-' + receiptStatus.PaidColor" *ngIf="rec.pkReceiptStatus == receiptStatus.Paid">Well done, this one is paid and everything is completed.</div>
+							<div [class]="'tracking-wide font-semibold text-' + receiptStatus.LateColor" *ngIf="rec.pkReceiptStatus == receiptStatus.Late">Please contact us regarding your payment plan! You should have received the invoice by now.</div>
+							<div [class]="'tracking-wide font-bold text-' + receiptStatus.DueColor" *ngIf="rec.pkReceiptStatus == receiptStatus.Due">You are required to pay the receipt fully up until the mentioned date!</div>
+						</div>
 					</div>
 				</div>
 				<div class="border-2 border-dashed border-300 rounded-lg">

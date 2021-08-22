@@ -12,7 +12,9 @@ export class Config {
 	constructor(@Inject(APP_CONFIG) appConfig: AppConfig, public errorFormConfig: NgxFormErrorConfig) {
 		errorFormConfig.updateMessages({
 			dateRange: (context) => `Missing end date.`,
+			passMatch: (context) => `Passwords do not match!`
 		});
+		
 		this.value = appConfig;
 	}
 	private interaction = new BehaviorSubject<Interaction>({} as any);

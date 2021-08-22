@@ -1,1 +1,35 @@
-<p>register works!</p>
+<div class="flex items-center justify-center">
+	<div class="p-4 w-full max-w-2xl">
+		<div class="text-center mb-5">
+			<div class="text-gray-900 text-3xl font-medium mb-3">Create an account!</div>
+			<span class="text-gray-600 font-medium">Already have an account?</span>
+			<a [routerLink]="['/login']" class="font-medium no-underline ml-2 text-blue-500 cursor-pointer">Sign in now!</a>
+		</div>
+
+		<div>
+			<form [formGroup]="registerForm">
+				<span class="p-float-label w-full">
+					<input required id="email" formControlName="email" type="text" pInputText class="w-full mb-3" />
+					<label for="">Email</label>
+				</span>
+				<ngx-form-error class="text-red-500" [control]="registerForm.get('email')"></ngx-form-error>
+
+				<span class="p-float-label w-full p-input-icon-right">
+					<i [class]="pw.type == 'text' ? 'pi pi-eye cursor-pointer' : 'pi pi-eye-slash cursor-pointer'" (click)="pw.type = pw.type == 'password' ? 'text' : 'password'"></i>
+					<input #pw required id="password" formControlName="password" type="password" pInputText class="w-full mb-3" />
+					<label for="">Password</label>
+				</span>
+				<ngx-form-error class="text-red-500" [control]="registerForm.get('password')"></ngx-form-error>
+
+				<span class="p-float-label w-full p-input-icon-right">
+					<i [class]="pwc.type == 'text' ? 'pi pi-eye cursor-pointer' : 'pi pi-eye-slash cursor-pointer'" (click)="pwc.type = pwc.type == 'password' ? 'text' : 'password'"></i>
+					<input #pwc required id="passwordConfirm" formControlName="passwordConfirm" type="password" pInputText class="w-full mb-3" />
+					<label for="">Confirm password</label>
+				</span>
+				<ngx-form-error class="text-red-500" [control]="registerForm.get('passwordConfirm')"></ngx-form-error>
+			</form>
+
+			<button (click)="register()" pButton pRipple label="Create account" icon="pi pi-user" class="w-full"></button>
+		</div>
+	</div>
+</div>

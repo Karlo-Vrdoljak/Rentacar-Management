@@ -36,6 +36,9 @@ import { TooltipModule } from 'primeng/tooltip';
 import { ProfilePageComponent } from './components/_pages/profile-page/profile-page.component';
 import { HttpErrorInterceptor } from './_interceptors/error.interceptor';
 import { StatusIconComponent } from './components/status-icon/status-icon.component';
+import { EditProfileComponent } from './components/user/edit-profile/edit-profile.component';
+import { InputMaskModule } from 'primeng/inputmask';
+import { RegisterPageComponent } from './components/_pages/register-page/register-page.component';
 
 const ngxUiLoaderConfig: NgxUiLoaderConfig = {
 	bgsColor: '#95B7FF',
@@ -52,8 +55,8 @@ const ngxUiLoaderConfig: NgxUiLoaderConfig = {
 };
 
 @NgModule({
-	declarations: [AppComponent, NavComponent, FooterComponent, HeaderComponent, HomeComponent, VehicleComponent, RentVehicleComponent, LoginComponent, RegisterComponent, LoginDialogComponent, LoginPageComponent, ProfilePageComponent, StatusIconComponent],
-	imports: [TooltipModule, MenubarModule, NgxFormErrorModule, CheckboxModule, DynamicDialogModule, ConfirmPopupModule, ToastModule, NgxUiLoaderModule.forRoot(ngxUiLoaderConfig), NgxUiLoaderRouterModule.forRoot({ showForeground: false }), ScrollingModule, AutoCompleteModule, BrowserAnimationsModule, CalendarModule, FormsModule, ReactiveFormsModule, HttpClientModule, ToolbarModule, RippleModule, ButtonModule, BrowserModule, AppRoutingModule, InputTextModule],
+	declarations: [AppComponent, NavComponent, FooterComponent, HeaderComponent, HomeComponent, VehicleComponent, RentVehicleComponent, LoginComponent, RegisterComponent, LoginDialogComponent, LoginPageComponent, ProfilePageComponent, StatusIconComponent, EditProfileComponent, RegisterPageComponent],
+	imports: [InputMaskModule, TooltipModule, MenubarModule, NgxFormErrorModule, CheckboxModule, DynamicDialogModule, ConfirmPopupModule, ToastModule, NgxUiLoaderModule.forRoot(ngxUiLoaderConfig), NgxUiLoaderRouterModule.forRoot({ showForeground: false }), ScrollingModule, AutoCompleteModule, BrowserAnimationsModule, CalendarModule, FormsModule, ReactiveFormsModule, HttpClientModule, ToolbarModule, RippleModule, ButtonModule, BrowserModule, AppRoutingModule, InputTextModule],
 	providers: [
 		{
 			provide: HTTP_INTERCEPTORS,
@@ -68,7 +71,7 @@ const ngxUiLoaderConfig: NgxUiLoaderConfig = {
 		ConfirmationService,
 		MessageService,
 	],
-	entryComponents: [LoginComponent],
+	entryComponents: [LoginComponent, EditProfileComponent],
 	bootstrap: [AppComponent],
 })
 export class AppModule {}

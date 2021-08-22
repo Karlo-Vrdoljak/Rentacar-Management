@@ -26,7 +26,6 @@ export class VehicleComponent implements OnInit, AfterViewInit {
 				const { hits, totalHits } = res;
 				const randomnumber = Math.floor(Math.random() * totalHits) + 0;
 				const photo = hits[randomnumber];
-				console.log(photo);
 				this.imgSrc = photo?.webformatURL;
 			});
 	}

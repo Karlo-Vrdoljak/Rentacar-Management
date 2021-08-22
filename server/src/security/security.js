@@ -53,7 +53,19 @@ export default class Security {
 	}
 	useErrorHandler() {
 		return (err, req, res, next) => {
-			console.log({ err });
+			// console.trace({ err });
+			console.log(JSON.stringify(err), 'TokenExpiredError' == err?.inner?.name?.toString());
+			if ('TokenExpiredError' == err?.inner?.name?.toString()) {
+				if (req.headers.authorization) {
+					const user = jwt.decode(req.headers.authorization.split(' ')[1]);
+					delete user.iat;
+					delete user.exp;
+
+					if (user) {
+						return res.status(299).send({ jwt: this.signJwt(user) });
+					}
+				}
+			}
 			if (err.name in consts.ERRORS) {
 				return res.status(err?.status || 500).send(err);
 			}

@@ -4,6 +4,7 @@
 			<!-- <img src="assets/images/blocks/logos/hyper.svg" alt="Image" height="50" class="mb-3" /> -->
 			<div class="text-gray-900 text-3xl font-medium mb-3">Welcome Back</div>
 			<span class="text-gray-600 font-medium">Don't have an account?</span>
+			<!-- <a [routerLink]="['/register']" (click)="handleRegisterClick()" class="font-medium no-underline ml-2 text-blue-500 cursor-pointer">Create today!</a> -->
 			<a [routerLink]="['/register']" (click)="handleRegisterClick()" class="font-medium no-underline ml-2 text-blue-500 cursor-pointer">Create today!</a>
 		</div>
 
@@ -15,8 +16,9 @@
 				</span>
 				<ngx-form-error class="text-red-500" [control]="login.get('email')"></ngx-form-error>
 
-				<span class="p-float-label w-full">
-					<input required id="password" formControlName="password" type="password" pInputText class="w-full mb-3" />
+				<span class="p-float-label w-full p-input-icon-right">
+					<i [class]="pw.type == 'text' ? 'pi pi-eye cursor-pointer' : 'pi pi-eye-slash cursor-pointer'" (click)="pw.type = pw.type == 'password' ? 'text' : 'password'"></i>
+					<input #pw required id="password" formControlName="password" type="password" pInputText class="w-full mb-3" />
 					<label for="">Password</label>
 				</span>
 				<ngx-form-error class="text-red-500" [control]="login.get('password')"></ngx-form-error>

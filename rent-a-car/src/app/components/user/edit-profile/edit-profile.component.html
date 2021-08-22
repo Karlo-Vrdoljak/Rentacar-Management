@@ -1,0 +1,38 @@
+<div class="flex items-center justify-center w-96">
+	<div class="p-4 w-full max-w-2xl">
+		<form [formGroup]="userForm">
+			<div class="flex flex-col w-full items-center">
+				<span class="p-float-label w-full">
+					<input required id="name" formControlName="name" type="text" pInputText class="w-full mb-3" />
+					<label for="">name</label>
+				</span>
+				<ngx-form-error class="text-red-500" [control]="userForm.get('name')"></ngx-form-error>
+			</div>
+			<div class="flex flex-col w-full items-center">
+				<span class="p-float-label w-full">
+					<input required id="lastName" formControlName="lastName" type="lastName" pInputText class="w-full mb-3" />
+					<label for="">Last name</label>
+				</span>
+				<ngx-form-error class="text-red-500" [control]="userForm.get('lastName')"></ngx-form-error>
+			</div>
+			<div class="flex flex-col w-full items-center">
+				<span class="p-float-label w-full">
+					<p-autoComplete appendTo="body" styleClass="w-full" inputStyleClass="w-full" formControlName="address" [suggestions]="autocomplete" (completeMethod)="fetchAutoComplete($event)"></p-autoComplete>
+					<label for="">Address</label>
+				</span>
+				<ngx-form-error class="text-red-500" [control]="userForm.get('address')"></ngx-form-error>
+			</div>
+			<div class="flex flex-col w-full items-center">
+				<span class="p-float-label w-full">
+					<p-inputMask styleClass="w-full my-3" formControlName="phone" mask="(999) 999-9999? x99999" [unmask]="true"></p-inputMask>
+
+					<label for="">phone</label>
+				</span>
+				<ngx-form-error class="text-red-500" [control]="userForm.get('phone')"></ngx-form-error>
+			</div>
+		</form>
+		<div class="pt-8">
+			<button [loading]="loader.isLoading" [disabled]="canSaveUi()" (click)="save()" pButton pRipple label="Save changes" icon="pi pi-user" class="w-full"></button>
+		</div>
+	</div>
+</div>

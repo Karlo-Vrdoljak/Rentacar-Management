@@ -16,7 +16,6 @@ export class HomeComponent implements OnInit {
 
 	initView() {
 		this.vehicles = this.route.snapshot.data.pageData[0] || [];
-		console.log(this.vehicles);
 		
 	}
 }

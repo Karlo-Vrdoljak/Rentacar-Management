@@ -31,7 +31,6 @@ export class LoginComponent implements OnInit {
 	}
 
 	ngOnInit(): void {
-		console.log(this.dialogRef);
 	}
 	handleRegisterClick() {
 		this.dialogRef?.ref.close();
@@ -48,6 +47,7 @@ export class LoginComponent implements OnInit {
 						this.auth.saveLocal(jwt);
 					}
 					this.auth.user = this.auth.parseJwt(jwt);
+					this.auth.jwt = jwt;
 					this.config.nextInteraction({ id: EInteractionReducer.loggedIn, args: this.auth.user });
 					this.loader.stop(`Welcome back ${this.auth.user?.name} ${this.auth.user?.lastName}!`);
 

@@ -5,6 +5,7 @@ import { Observable } from 'rxjs';
 import { ELocalStorage } from '../_consts/consts';
 import { User } from './../_consts/consts';
 import { EInteractionReducer } from 'src/app/_consts/consts';
+import { Router } from '@angular/router';
 
 const USER = 'user';
 
@@ -13,8 +14,10 @@ const USER = 'user';
 })
 export class AuthService {
 	user: User | null;
-	constructor(public httpClient: HttpClient, public config: Config) {
+	jwt: string | null;
+	constructor(public router: Router, public httpClient: HttpClient, public config: Config) {
 		this.user = this.fetchLocal();
+		this.jwt = localStorage.getItem(ELocalStorage.JWT);
 	}
 
 	signIn({ email, password }): Observable<any> {
@@ -57,6 +60,36 @@ export class AuthService {
 		this.clearAuth();
 		this.user = null;
 		this.config.nextInteraction({ id: EInteractionReducer.logoff });
-		// reload && window.location.reload();
+		this.router.navigate(['/home']);
+	}
+	hasLevel(level: number, pkOwner?: number) {
+		const claims = this.user?.claims;
+		if (claims) {
+			const tokens = claims.split(',');
+			if (tokens.includes('admin')) {
+				return true;
+			}
+			if (pkOwner) {
+				return this.user?.pkUser == pkOwner ? true : false;
+			}
+			return tokens.length >= level;
+		}
+		return false;
+	}
+	hasClaim(claim: string, pkOwner?: number | null) {
+		const claims = this.user?.claims;
+		if (claims) {
+			const tokens = claims.split(',');
+			if (tokens.includes('admin')) {
+				return true;
+			}
+			if (pkOwner) {
+				console.log(this.user?.pkUser, pkOwner);
+
+				return this.user?.pkUser == pkOwner ? true : false;
+			}
+			return tokens.includes(claim);
+		}
+		return false;
 	}
 }

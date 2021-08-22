@@ -17,7 +17,6 @@ export class StatusIconComponent implements OnInit {
 	constructor() {}
 
 	ngOnInit(): void {
-		console.log(this);
 		
 	}
 }

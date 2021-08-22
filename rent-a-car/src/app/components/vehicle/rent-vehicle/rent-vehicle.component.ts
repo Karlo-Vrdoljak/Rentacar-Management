@@ -32,7 +32,6 @@ export class RentVehicleComponent implements OnInit {
 			[
 				Validators.required,
 				(dates: AbstractControl) => {
-					console.log(dates?.value);
 
 					return dates?.value.every((d) => !!d) ? null : { dateRange: {} };
 				},
@@ -50,7 +49,6 @@ export class RentVehicleComponent implements OnInit {
 		fetch(this.config.value.AUTO_COMPLETE_API + query)
 			.then((response) => response.json())
 			.then((result) => {
-				console.log(result);
 				const { features } = result;
 				this.results = features.map((feature) => ({ ...features, autocomplete: feature?.properties?.formatted ?? null }));
 				this.autocomplete = this.results.map((result) => result?.autocomplete || '');
@@ -68,7 +66,6 @@ export class RentVehicleComponent implements OnInit {
 			event,
 			message: 'Everything seems alright?',
 			accept: () => {
-				console.log(this.rentVehicle.value);
 				if (!this.auth.user) {
 					const ref = this.dialogService.open(LoginDialogComponent, {
 						header: 'To finish up the request, please sign in!',
@@ -122,6 +119,5 @@ export class RentVehicleComponent implements OnInit {
 
 	ngOnInit(): void {
 		this.vehicle = this.route.snapshot.data.pageData[0] || [];
-		console.log(this.vehicle);
 	}
 }

@@ -110,9 +110,17 @@ router.post('/register', async (req, res, next) => {
 
 router.put('/update', async (req, res) => {
 	const { pkUser, email, name, lastName, phone, address, claims } = req.body;
+	console.log(req.body);
+	let where = {};
+	if (email) {
+		where = { ...(email && { email }) };
+	} else if (pkUser) {
+		where = { ...(pkUser && { pkUser: pkUser }) };
+	}
+	console.log(where);
 	try {
 		const user = await prisma.user.update({
-			where: { ...(email && { email }), ...(pkUser && { pkUser: pkUser }) },
+			where,
 			data: {
 				...(name && { name }),
 				...(lastName && { lastName }),
@@ -123,15 +131,22 @@ router.put('/update', async (req, res) => {
 		});
 		res.send(user);
 	} catch (error) {
+		console.log(error);
 		res.status(500).send(error);
 	}
 });
 
 router.put('/password', async (req, res) => {
 	const { pkUser, email, password } = req.body;
+	let where = {};
+	if (email) {
+		where = { ...(email && { email }) };
+	} else if (pkUser) {
+		where = { ...(pkUser && { pkUser: pkUser }) };
+	}
 	try {
 		const user = await prisma.user.update({
-			where: { ...(email && { email }), ...(pkUser && { pkUser: pkUser }) },
+			where,
 			data: {
 				...(password && { password: security.hashString(password) }),
 			},
@@ -144,10 +159,15 @@ router.put('/password', async (req, res) => {
 
 router.delete('/delete', async (req, res, next) => {
 	const { pkUser, email } = req.query;
-
+	let where = {};
+	if (email) {
+		where = { ...(email && { email }) };
+	} else if (pkUser) {
+		where = { ...(pkUser && { pkUser: pkUser }) };
+	}
 	try {
 		await prisma.user.delete({
-			where: { ...(email && { email }), ...(pkUser && { pkUser: pkUser }) },
+			where,
 		});
 		res.send({ pkUser, email });
 	} catch (error) {

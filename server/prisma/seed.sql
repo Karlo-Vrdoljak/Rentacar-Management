@@ -228,7 +228,7 @@ VALUES
   ('Due');
 
 insert into
-  receipt(pkRent, price, currencyCode, pkReceiptStatus)
+  receipt(pkRent, price, currencyCode, pkReceiptStatus, currentlyPaid, isPaid)
 values
-  (1, '1940.00', 'HRK', 3),
-  (2, '2140.00', 'HRK', 2);
+  (1, '1940.00', 'HRK', 2, '1935.00', 1),
+  (2, '2140.00', 'HRK', 4, '0.00', 0);

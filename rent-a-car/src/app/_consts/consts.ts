@@ -67,10 +67,14 @@ export enum VEHICLE_STATUS {
 	NotAvailableColor = 'gray-500',
 }
 export enum RECEIPT_STATUS {
-	Waiting = 1,
+	Waiting = 1, // until rent complete
 	Paid = 2,
 	Late = 3,
-	Due = 4,
+	Due = 4, // imas lufta jos
+	WaitingColor = 'gray-500',
+	PaidColor = 'green-400',
+	LateColor = 'red-400',
+	DueColor = 'blue-400',
 }
 
 export enum RENT_STATUS {
@@ -116,4 +120,11 @@ export interface Rent {
 	vehicle: Vehicle;
 	receipt: any[];
 	rentStatus: RentStatus;
+}
+
+export enum EClaims {
+	owner,
+	user,
+	employed,
+	admin,
 }

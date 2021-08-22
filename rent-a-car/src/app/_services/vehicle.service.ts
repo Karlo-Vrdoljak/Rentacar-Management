@@ -9,7 +9,6 @@ const SLUG = 'vehicle';
 })
 export class VehicleService {
 	constructor(public httpClient: HttpClient, public config: Config) {
-		console.log(config.value.API_URL);
 	}
 
 	getAllVehiclesAvailable() {

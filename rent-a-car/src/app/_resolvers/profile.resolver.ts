@@ -13,12 +13,8 @@ export class ProfileResolver implements Resolve<any> {
 	constructor(public vehicleService: VehicleService, public userService: UserService) {}
 	resolve(route: ActivatedRouteSnapshot, state: RouterStateSnapshot) {
 		const { pkUser } = route.params;
-		console.log(pkUser);
-
 		return forkJoin([this.userService.getOne({ pkUser }), this.vehicleService.getAllVehiclesForUser({ pkUser }), this.userService.getStats({ pkUser })]).pipe(
 			catchError((err, caught) => {
-        console.log(caught);
-        
 				return of([true]);
 			})
 		);

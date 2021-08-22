@@ -26,7 +26,6 @@ export class NavComponent implements OnInit {
 
 	ngOnInit(): void {
 		this.items = this.makeMenuItems();
-		console.log(this.items);
 
 		this.config.currentInteraction.subscribe(({ id }) => {
 			if (id == EInteractionReducer.loggedIn || id == EInteractionReducer.logoff) {
@@ -62,7 +61,6 @@ export class NavComponent implements OnInit {
 			data: null,
 		});
 		ref.onClose.pipe(takeUntil(this.destroy)).subscribe(({ user }) => {
-			console.log(user);
 		});
 	}
 }
