@@ -13,7 +13,7 @@ export class UserService {
 	constructor(public httpClient: HttpClient, public config: Config) {}
 
 	getAll() {
-		return this.httpClient.get(this.config.value.API_URL + SLUG + '/public/available');
+		return this.httpClient.get(this.config.value.API_URL + SLUG + '/all');
 	}
 	getOne({ pkUser }) {
 		const req = {

@@ -1,4 +1,4 @@
-import { cors, bodyParser, consts, dotenv, express, rentApi, security, userApi, vehicleApi } from './app.module.js';
+import { cors, bodyParser, consts, dotenv, express, rentApi, receiptApi, security, userApi, vehicleApi } from './app.module.js';
 import findLateReceiptsCRON from './src/cron/findLateReceipts.js';
 
 dotenv.config();
@@ -22,6 +22,7 @@ app.use((req, res, next) => consts.useQueryParser(req, res, next));
 app.use('/user', userApi);
 app.use('/vehicle', vehicleApi);
 app.use('/rent', rentApi);
+app.use('/receipt', receiptApi);
 
 app.get('/test', async (req, res) => {
 	const b = await security.hashString('asdfasdf');

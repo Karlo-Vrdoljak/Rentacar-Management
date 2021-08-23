@@ -1,0 +1,48 @@
+<div class="flex items-center justify-center w-96">
+	<div class="p-4 w-full max-w-2xl">
+		<form [formGroup]="form">
+			<!--    vehicle rentStatus -->
+			<div class="flex flex-col py-2 w-full items-start">
+				<span class="p-float-label w-full">
+					<p-calendar required styleClass="w-full" inputStyleClass="w-full" formControlName="rentFromAndRentTo" [showIcon]="true" dateFormat="dd.mm.yy" selectionMode="range" [readonlyInput]="true" inputId="range"></p-calendar>
+					<label for="">Rent period</label>
+				</span>
+				<ngx-form-error class="text-red-500" [control]="form.get('rentFromAndRentTo')"></ngx-form-error>
+			</div>
+			<div class="flex flex-col py-2 w-full items-start">
+				<span class="p-float-label w-full">
+					<p-autoComplete required appendTo="body" styleClass="w-full" inputStyleClass="w-full" formControlName="pickupLocation" [suggestions]="autocomplete" (completeMethod)="fetchAutoComplete($event)"></p-autoComplete>
+					<label for="">Pickup location</label>
+				</span>
+				<ngx-form-error class="text-red-500" [control]="form.get('pickupLocation')"></ngx-form-error>
+			</div>
+			<div class="flex flex-col py-2 w-full items-start">
+				<span class="p-float-label w-full">
+					<p-autoComplete required appendTo="body" styleClass="w-full" inputStyleClass="w-full" formControlName="dropOffLocation" [suggestions]="autocomplete" (completeMethod)="fetchAutoComplete($event)"></p-autoComplete>
+					<label for="">Dropoff location</label>
+				</span>
+				<ngx-form-error class="text-red-500" [control]="form.get('dropOffLocation')"></ngx-form-error>
+			</div>
+			<div class="flex flex-col py-2 w-full items-start">
+				<label class="px-2" for="">Renting user</label>
+				<p-dropdown [filter]="true" [ngStyle]="{ width: '100%' }" styleClass="w-full" filterBy="name,lastName" optionLabel="nameWithLastName" [options]="users" [virtualScroll]="true" itemSize="30" formControlName="user"></p-dropdown>
+				<ngx-form-error class="text-red-500" [control]="form.get('user')"></ngx-form-error>
+			</div>
+			<div class="flex flex-col py-2 w-full items-start">
+				<label class="px-2" for="">Vehicle</label>
+				<p-dropdown [filter]="true" [ngStyle]="{ width: '100%' }" styleClass="w-full" filterBy="manufacturer,model,code" optionLabel="code" [options]="vehicles" [virtualScroll]="true" itemSize="30" formControlName="vehicle">
+					<ng-template let-i pTemplate="item">
+						<div class="flex flex-row flex-wrap items-center justify-between">
+							<div>{{ i.manufacturer }} {{ i.model }}</div>
+							<div>{{ i.code }}</div>
+						</div>
+					</ng-template>
+				</p-dropdown>
+				<ngx-form-error class="text-red-500" [control]="form.get('vehicle')"></ngx-form-error>
+			</div>
+		</form>
+		<div class="pt-8">
+			<button [disabled]="!form.valid" [loading]="loader.isLoading" (click)="save()" pButton pRipple [label]="rent ? 'Save Changes' : 'Add rent'" icon="pi pi-save" class="w-full"></button>
+		</div>
+	</div>
+</div>

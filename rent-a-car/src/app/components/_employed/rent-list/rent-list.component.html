@@ -3,7 +3,8 @@
 	[globalFilterFields]="['pickupLocation', 'dropOffLocation', 'address', 'rent_entry.name', 'rent_entry.lastName', 'vehicle.code', 'rent_user.name', 'rent_user.lastName', 'rentStatus.name']"
 	dataKey="pkRent"
 	[(selection)]="selectedRents"
-	styleClass="p-datatable-striped"
+	styleClass="p-datatable-striped rounded-lg"
+	tableStyleClass="rounded-lg"
 	[columns]="cols"
 	[value]="rents"
 	responsiveLayout="stack"
@@ -16,8 +17,8 @@
 	<ng-template pTemplate="caption">
 		<div class="text-semibold w-full text-2xl pb-3">Rent list</div>
 		<div class="flex flex-col md:flex-row md:items-center text-sm">
-			<div class="pr-2"><button pButton pRipple label="New rent" type="button" icon="pi pi-plus-circle"></button></div>
-			<div class="pr-2"><button (click)="confirmDelete($event, selectedRents)" pButton pRipple label="Delete selected" type="button" icon="pi pi-trash" class="p-button-danger p-button-text"></button></div>
+			<div class="pr-2"><button (click)="addNewRent()" pButton pRipple label="New rent" type="button" icon="pi pi-plus-circle"></button></div>
+			<div class="pr-2"><button [disabled]="!selectedRents?.length" (click)="confirmDelete($event, selectedRents)" pButton pRipple label="Delete selected" type="button" icon="pi pi-trash" class="p-button-danger p-button-text"></button></div>
 			<div class="flex md:items-center">
 				<div class="pr-2">
 					<span class="p-input-icon-left p-ml-auto">
@@ -34,8 +35,8 @@
 			<th style="width: 3rem">
 				<p-tableHeaderCheckbox></p-tableHeaderCheckbox>
 			</th>
-			<th *ngFor="let col of columns">
-				{{ col.header }}
+			<th [pTooltip]="col.header" *ngFor="let col of columns">
+				{{ col.header | truncate: 8 }}
 			</th>
 			<th>Tools</th>
 		</tr>
@@ -78,9 +79,11 @@
 				</div>
 			</td>
 			<td>
-				<div class="flex flex-row items-center">
-					<button pButton pRipple type="button" icon="pi pi-pencil" class="p-button-rounded p-button-warning p-button-text"></button>
-					<button (click)="confirmDelete($event, [rowData])" pButton pRipple type="button" icon="pi pi-trash" class="p-button-rounded p-button-danger p-button-text"></button>
+				<div class="flex flex-row flex-wrap items-center">
+					<button pTooltip="Expand" (click)="expand(rowData)" pButton pRipple type="button" icon="pi pi-external-link" class="p-button-rounded p-button-text"></button>
+					<button pTooltip="Edit rent" (click)="editRent(rowData)" pButton pRipple type="button" icon="pi pi-pencil" class="p-button-rounded p-button-warning p-button-text"></button>
+					<button pTooltip="Change status" (click)="changeStatusRent(rowData)" pButton pRipple type="button" icon="pi pi-flag" class="p-button-rounded p-button-warning p-button-text"></button>
+					<button pTooltip="Delete" (click)="confirmDelete($event, [rowData])" pButton pRipple type="button" icon="pi pi-trash" class="p-button-rounded p-button-danger p-button-text"></button>
 				</div>
 			</td>
 		</tr>

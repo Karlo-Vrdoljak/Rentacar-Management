@@ -69,6 +69,7 @@ export class RentVehicleComponent implements OnInit {
 				if (!this.auth.user) {
 					const ref = this.dialogService.open(LoginDialogComponent, {
 						header: 'To finish up the request, please sign in!',
+						modal: true,
 						closable: true,
 						data: this.rentVehicle.value,
 					});

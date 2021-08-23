@@ -65,6 +65,7 @@ export class NavComponent implements OnInit {
 		const ref = this.dialogService.open(LoginDialogComponent, {
 			header: '',
 			closable: true,
+			modal: true,
 			data: null,
 		});
 		ref.onClose.pipe(takeUntil(this.destroy)).subscribe(({ user }) => {});

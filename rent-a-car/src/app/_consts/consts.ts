@@ -13,6 +13,28 @@ export interface VehicleStatus {
 	name: string;
 	pkVehicleStatus: number;
 }
+
+export interface ReceiptStatus {
+	pkReceiptStatus: number;
+	createdAt: Date;
+	changedAt: Date;
+	name: string;
+	receipt: Receipt;
+}
+export interface Receipt {
+	pkReceipt: number;
+	createdAt: Date;
+	changedAt: Date;
+	pkRent: number;
+	price: string;
+	currencyCode: string;
+	dateDue: Date;
+	pkReceiptStatus: number;
+	currentlyPaid: string;
+	isPaid: 1 | 0;
+	receiptStatus: string;
+	rent: Rent;
+}
 export interface Vehicle {
 	changedAt: string;
 	code: string;
@@ -54,6 +76,7 @@ export interface User {
 	password: string;
 	phone: string;
 	pkUser: number;
+	nameWithLastName?: string;
 }
 
 export enum VEHICLE_STATUS {
@@ -118,6 +141,8 @@ export interface Rent {
 	pickupLocation: string;
 	dropOffLocation?: any;
 	vehicle: Vehicle;
+	rent_user?: User;
+	rent_entry?: User;
 	receipt: any[];
 	rentStatus: RentStatus;
 }

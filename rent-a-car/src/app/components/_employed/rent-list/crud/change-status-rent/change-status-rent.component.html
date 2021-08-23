@@ -1,0 +1,24 @@
+<div class="flex items-center justify-center w-96">
+	<div class="p-4 w-full max-w-2xl">
+		<!--    vehicle rentStatus -->
+		<div class="flex flex-col py-2 w-full items-start">
+			<span class="w-full">
+				<label for="">Select status</label>
+				<p-listbox listStyle="w-full" [options]="rentStatuses" (ngModelChange)="onSelect($event)" [ngModel]="selectedStatus">
+					<ng-template let-i pTemplate="item">
+						<div class="flex w-11/12 pr-4 flex-row items-center flex-wrap justify-between">
+							<div>{{ i.label }}</div>
+							<div class="w-0 relative -top-7 right-0">
+								<app-status-icon *ngIf="i?.value" [symbolFor]="'rent'" [status]="i?.value"></app-status-icon>
+							</div>
+						</div>
+					</ng-template>
+				</p-listbox>
+			</span>
+		</div>
+
+		<div class="pt-8">
+			<button [loading]="loader.isLoading" (click)="save()" pButton pRipple label="Set status" icon="pi pi-save" class="w-full"></button>
+		</div>
+	</div>
+</div>

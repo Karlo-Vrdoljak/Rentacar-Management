@@ -143,11 +143,17 @@ router.post('/public/upsert', async (req, res) => {
 					rentStatus: {
 						connect: { pkRentStatus },
 					},
+					vehicle: {
+						connect: { pkVehicle },
+					},
+					rent_user: {
+						connect: { pkUser: pkUserRented },
+					},
 				},
 			})
 		);
 
-	const updateVehicleStatus = () =>
+	const updateVehicleStatus = ({ pkVehicle, pkVehicleStatus }) =>
 		from(
 			prisma.vehicle.update({
 				where: { pkVehicle },
@@ -159,24 +165,46 @@ router.post('/public/upsert', async (req, res) => {
 			})
 		);
 
-	pkRent
-		? updateRent()
-		: createRent()
-				.pipe(first())
-				.subscribe((rent) =>
-					updateVehicleStatus()
-						.pipe(first())
-						.subscribe((vehicle) => {
-							res.send({ vehicle, rent });
-						})
-				);
-
+	if (pkRent) {
+		const persistedRent = await prisma.rent.findUnique({ where: { pkRent }, include: { vehicle: true } });
+		updateVehicleStatus({ pkVehicle: persistedRent.pkVehicle, pkVehicleStatus: consts.VEHICLE_STATUS.Available })
+			.pipe(first())
+			.subscribe((veh) => {
+				updateRent()
+					.pipe(first())
+					.subscribe((rent) =>
+						updateVehicleStatus({ pkVehicle, pkVehicleStatus })
+							.pipe(first())
+							.subscribe((vehicle) => {
+								res.send({ vehicle, rent });
+							})
+					);
+			});
+	} else {
+		createRent()
+			.pipe(first())
+			.subscribe((rent) =>
+				updateVehicleStatus({ pkVehicle, pkVehicleStatus })
+					.pipe(first())
+					.subscribe((vehicle) => {
+						res.send({ vehicle, rent });
+					})
+			);
+	}
 	console.log(params);
 });
 
 router.delete('/one', async (req, res, next) => {
 	const { pkRent } = req.query;
 	try {
+		const rent = await prisma.rent.findUnique({ where: { pkRent } });
+		await prisma.vehicle.update({
+			where: { pkVehicle: rent.pkVehicle },
+			data: {
+				vehicleStatus: { connect: { pkVehicleStatus: consts.VEHICLE_STATUS.Available } },
+			},
+		});
+
 		await prisma.rent.delete({ where: { pkRent } });
 		res.send({ pkRent });
 	} catch (error) {

@@ -43,7 +43,12 @@ import { DashboardPageComponent } from './components/_pages/dashboard-page/dashb
 import { TableModule } from 'primeng/table';
 import { RentListComponent } from './components/_employed/rent-list/rent-list.component';
 import { TruncatePipe } from './_pipes/truncate.pipe';
-import { InsertUpdateRentComponent } from './components/_employed/rent-list/crud/insert-update-rent/insert-update-rent.component';
+import { ViewRentComponent } from './components/_employed/rent-list/crud/view-rent/view-rent.component';
+import { AddRentComponent } from './components/_employed/rent-list/crud/add-rent/add-rent.component';
+import { ChangeStatusRentComponent } from './components/_employed/rent-list/crud/change-status-rent/change-status-rent.component';
+import { DropdownModule } from 'primeng/dropdown';
+import { ListboxModule } from 'primeng/listbox';
+
 const ngxUiLoaderConfig: NgxUiLoaderConfig = {
 	bgsColor: '#95B7FF',
 	fgsColor: '#7FC849',
@@ -59,8 +64,35 @@ const ngxUiLoaderConfig: NgxUiLoaderConfig = {
 };
 
 @NgModule({
-	declarations: [TruncatePipe, AppComponent, NavComponent, FooterComponent, HeaderComponent, HomeComponent, VehicleComponent, RentVehicleComponent, LoginComponent, RegisterComponent, LoginDialogComponent, LoginPageComponent, ProfilePageComponent, StatusIconComponent, EditProfileComponent, RegisterPageComponent, DashboardPageComponent, RentListComponent, InsertUpdateRentComponent],
-	imports: [TableModule, InputMaskModule, TooltipModule, MenubarModule, NgxFormErrorModule, CheckboxModule, DynamicDialogModule, ConfirmPopupModule, ToastModule, NgxUiLoaderModule.forRoot(ngxUiLoaderConfig), NgxUiLoaderRouterModule.forRoot({ showForeground: false }), ScrollingModule, AutoCompleteModule, BrowserAnimationsModule, CalendarModule, FormsModule, ReactiveFormsModule, HttpClientModule, ToolbarModule, RippleModule, ButtonModule, BrowserModule, AppRoutingModule, InputTextModule],
+	declarations: [TruncatePipe, AppComponent, NavComponent, FooterComponent, HeaderComponent, HomeComponent, VehicleComponent, RentVehicleComponent, LoginComponent, RegisterComponent, LoginDialogComponent, LoginPageComponent, ProfilePageComponent, StatusIconComponent, EditProfileComponent, RegisterPageComponent, DashboardPageComponent, RentListComponent, ViewRentComponent, AddRentComponent, ChangeStatusRentComponent],
+	imports: [
+		DropdownModule,
+		TableModule,
+		InputMaskModule,
+		TooltipModule,
+		MenubarModule,
+		NgxFormErrorModule,
+		ListboxModule,
+		CheckboxModule,
+		DynamicDialogModule,
+		ConfirmPopupModule,
+		ToastModule,
+		NgxUiLoaderModule.forRoot(ngxUiLoaderConfig),
+		NgxUiLoaderRouterModule.forRoot({ showForeground: false }),
+		ScrollingModule,
+		AutoCompleteModule,
+		BrowserAnimationsModule,
+		CalendarModule,
+		FormsModule,
+		ReactiveFormsModule,
+		HttpClientModule,
+		ToolbarModule,
+		RippleModule,
+		ButtonModule,
+		BrowserModule,
+		AppRoutingModule,
+		InputTextModule,
+	],
 	providers: [
 		{
 			provide: HTTP_INTERCEPTORS,
@@ -75,7 +107,7 @@ const ngxUiLoaderConfig: NgxUiLoaderConfig = {
 		ConfirmationService,
 		MessageService,
 	],
-	entryComponents: [LoginComponent, EditProfileComponent],
+	entryComponents: [ChangeStatusRentComponent, ViewRentComponent, AddRentComponent, LoginComponent, EditProfileComponent],
 	bootstrap: [AppComponent],
 })
 export class AppModule {}

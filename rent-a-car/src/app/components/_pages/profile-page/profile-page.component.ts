@@ -55,6 +55,7 @@ export class ProfilePageComponent implements OnInit {
 			header: 'Edit your profile details',
 			closable: true,
 			data: this.user,
+			modal: true,
 		});
 		ref.onClose.pipe(takeUntil(this.destroy)).subscribe((result) => {
 			if (result) {

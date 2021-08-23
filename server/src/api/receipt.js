@@ -1,13 +1,13 @@
 import { consts, express, prisma } from '../../app.module.js';
 const router = express.Router();
 
-router.get('/pk', async (req, res) => {
+router.get('/one', async (req, res) => {
 	const { pkReceipt } = req.query;
-	res.send(await prisma.receipt.findUnique({ where: { pkReceipt }, include: { rent: true, rentStatus: true } }));
+	res.send(await prisma.receipt.findUnique({ where: { pkReceipt }, include: { rent: true, receiptStatus: true } }));
 });
 
 router.get('/all', async (req, res) => {
-	res.send(await prisma.receipt.findMany({ include: { rent: true, rentStatus: true }, orderBy: { changedAt: 'desc', createdAt: 'desc' } }));
+	res.send(await prisma.receipt.findMany({ include: { rent: true, receiptStatus: true }, orderBy: { changedAt: 'desc' } }));
 });
 
 async function fetchLateReciepts() {
@@ -27,7 +27,7 @@ router.delete('/one', async (req, res, next) => {
 	const { pkReceipt } = req.query;
 	try {
 		await prisma.receipt.delete({ where: { pkReceipt } });
-		res.send({pkReceipt});
+		res.send({ pkReceipt });
 	} catch (error) {
 		next(error);
 	}
@@ -59,8 +59,8 @@ router.put('/update/deposit', async (req, res) => {
 	if (mainDue + subDue / 100 - (mainDeposited + subDeposited / 100) <= consts.PAY_TOLERANCE) {
 		receipt.isPaid = 1;
 	}
-	const [currPaid, currPaid] = consts.parseCurrency(receipt.currentlyPaid);
-	receipt.currentlyPaid = consts.makeCurrencyString(currPaid + mainDeposited + (currPaid / 100 + subDeposited / 100));
+	const [currPaid, currPaidSub] = consts.parseCurrency(receipt.currentlyPaid);
+	receipt.currentlyPaid = consts.makeCurrencyString(currPaid + mainDeposited + (currPaidSub / 100 + subDeposited / 100));
 
 	delete receipt.pkReceipt;
 	delete receipt.pkReceiptStatus;

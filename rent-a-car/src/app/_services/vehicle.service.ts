@@ -8,8 +8,7 @@ const SLUG = 'vehicle';
 	providedIn: 'root',
 })
 export class VehicleService {
-	constructor(public httpClient: HttpClient, public config: Config) {
-	}
+	constructor(public httpClient: HttpClient, public config: Config) {}
 
 	getAllVehiclesAvailable() {
 		return this.httpClient.get(this.config.value.API_URL + SLUG + '/public/available');
@@ -25,5 +24,8 @@ export class VehicleService {
 			pkUser,
 		};
 		return this.httpClient.get(this.config.value.API_URL + SLUG + '/user/vehicles', { params: req });
+	}
+	getAll() {
+		return this.httpClient.get(this.config.value.API_URL + SLUG + '/all');
 	}
 }

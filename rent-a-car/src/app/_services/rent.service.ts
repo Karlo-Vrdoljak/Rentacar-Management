@@ -43,4 +43,17 @@ export class RentService {
 	getAll() {
 		return this.httpClient.get(this.config.value.API_URL + SLUG + '/all');
 	}
+	deleteOne({ pkRent }) {
+		const req = {
+			pkRent,
+		};
+		return this.httpClient.delete(this.config.value.API_URL + SLUG + '/one', { params: req });
+	}
+	changeStatusRent({ pkRent, rentStatus }) {
+		const req = {
+			pkRent,
+			pkRentStatus: rentStatus,
+		};
+		return this.httpClient.put(this.config.value.API_URL + SLUG + '/update/status', req);
+	}
 }
