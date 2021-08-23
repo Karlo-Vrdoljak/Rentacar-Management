@@ -48,6 +48,13 @@ export class NavComponent implements OnInit {
 						routerLink: ['/profile', this.auth.user?.pkUser],
 				  }
 				: null,
+			this.auth.hasClaim('employed')
+				? {
+						label: 'Dashboard',
+						icon: 'pi pi-fw pi-chart-line',
+						routerLink: ['/dashboard'],
+				  }
+				: null,
 		].filter((i) => !!i) as MenuItem[];
 	}
 
@@ -60,7 +67,6 @@ export class NavComponent implements OnInit {
 			closable: true,
 			data: null,
 		});
-		ref.onClose.pipe(takeUntil(this.destroy)).subscribe(({ user }) => {
-		});
+		ref.onClose.pipe(takeUntil(this.destroy)).subscribe(({ user }) => {});
 	}
 }

@@ -128,3 +128,6 @@ export enum EClaims {
 	employed,
 	admin,
 }
+
+export const USER_ROLE = ['user'];
+export const EMPLOYED_ROLE = ['employed'];

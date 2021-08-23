@@ -11,12 +11,9 @@ export interface StatusIconComponent extends BaseClass {}
 })
 export class StatusIconComponent implements OnInit {
 	@use(BaseClass) this;
-
 	@Input() status: any;
 	@Input() symbolFor: string = 'vehicle';
 	constructor() {}
 
-	ngOnInit(): void {
-		
-	}
+	ngOnInit(): void {}
 }

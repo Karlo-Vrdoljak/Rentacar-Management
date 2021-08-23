@@ -1,0 +1,88 @@
+<p-table
+	#dt
+	[globalFilterFields]="['pickupLocation', 'dropOffLocation', 'address', 'rent_entry.name', 'rent_entry.lastName', 'vehicle.code', 'rent_user.name', 'rent_user.lastName', 'rentStatus.name']"
+	dataKey="pkRent"
+	[(selection)]="selectedRents"
+	styleClass="p-datatable-striped"
+	[columns]="cols"
+	[value]="rents"
+	responsiveLayout="stack"
+	[paginator]="true"
+	[rows]="10"
+	[showCurrentPageReport]="true"
+	currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries"
+	[rowsPerPageOptions]="[10, 25, 50]"
+>
+	<ng-template pTemplate="caption">
+		<div class="text-semibold w-full text-2xl pb-3">Rent list</div>
+		<div class="flex flex-col md:flex-row md:items-center text-sm">
+			<div class="pr-2"><button pButton pRipple label="New rent" type="button" icon="pi pi-plus-circle"></button></div>
+			<div class="pr-2"><button (click)="confirmDelete($event, selectedRents)" pButton pRipple label="Delete selected" type="button" icon="pi pi-trash" class="p-button-danger p-button-text"></button></div>
+			<div class="flex md:items-center">
+				<div class="pr-2">
+					<span class="p-input-icon-left p-ml-auto">
+						<i class="pi pi-search"></i>
+						<input pInputText [(ngModel)]="filter" type="text" (input)="dt.filterGlobal(filter, 'contains')" placeholder="Search keyword" />
+					</span>
+				</div>
+				<div class="pr-2"><button pRipple pButton class="p-button-rounded p-button-text" icon="pi pi-filter-slash" (click)="clear(dt)"></button></div>
+			</div>
+		</div>
+	</ng-template>
+	<ng-template pTemplate="header" let-columns>
+		<tr>
+			<th style="width: 3rem">
+				<p-tableHeaderCheckbox></p-tableHeaderCheckbox>
+			</th>
+			<th *ngFor="let col of columns">
+				{{ col.header }}
+			</th>
+			<th>Tools</th>
+		</tr>
+	</ng-template>
+	<ng-template pTemplate="body" let-rowData let-columns="columns">
+		<tr>
+			<td>
+				<p-tableCheckbox [value]="rowData"></p-tableCheckbox>
+			</td>
+			<td *ngFor="let col of columns">
+				<div class="flex flex-row items-center flex-wrap w-full justify-between">
+					<div class="sm:hidden font-semibold">{{ col.field }}</div>
+					<div [ngSwitch]="col.field">
+						<div [pTooltip]="rowData[col.field] | date: 'dd.MM.yyyy'" class="truncate" *ngSwitchCase="'createdAt'">{{ rowData[col.field] | date: 'dd. MM. yyyy.' }}</div>
+						<div [pTooltip]="rowData[col.field] | date: 'dd.MM.yyyy'" class="truncate" *ngSwitchCase="'changedAt'">{{ rowData[col.field] | date: 'dd. MM. yyyy.' }}</div>
+						<div [pTooltip]="rowData[col.field] | date: 'dd.MM.yyyy'" class="truncate" *ngSwitchCase="'rentFrom'">{{ rowData[col.field] | date: 'dd. MM. yyyy.' }}</div>
+						<div [pTooltip]="rowData[col.field] | date: 'dd.MM.yyyy'" class="truncate" *ngSwitchCase="'rentTo'">{{ rowData[col.field] | date: 'dd. MM. yyyy.' }}</div>
+						<div class="flex items-center justify-end w-full" *ngSwitchCase="'rentStatus'">
+							<div class="flex w-4 items-center justify-end relative -top-7 right-0 left-1/2">
+								<app-status-icon *ngIf="rowData[col.field]?.pkRentStatus" [symbolFor]="'rent'" [status]="rowData[col.field]?.pkRentStatus"></app-status-icon>
+							</div>
+						</div>
+						<div [pTooltip]="rowData[col.field]?.email" class="flex w-full items-center justify-center" *ngSwitchCase="'rent_entry'">
+							<div class="hidden sm:flex">{{ rowData[col.field]?.email | truncate: 10 }}</div>
+							<div class="sm:hidden">{{ rowData[col.field]?.email | truncate: 50 }}</div>
+						</div>
+						<div [pTooltip]="rowData[col.field]?.email" class="flex w-full items-center justify-center" *ngSwitchCase="'rent_user'">
+							<div class="hidden sm:flex">{{ rowData[col.field]?.email | truncate: 10 }}</div>
+							<div class="sm:hidden">{{ rowData[col.field]?.email | truncate: 50 }}</div>
+						</div>
+						<div [pTooltip]="rowData[col.field]?.manufacturer + ' ' + rowData[col.field]?.model" class="flex w-full items-center justify-center" *ngSwitchCase="'vehicle'">
+							<div class="hidden sm:flex">{{ rowData[col.field]?.code | truncate: 10 }}</div>
+							<div class="sm:hidden">{{ rowData[col.field]?.code | truncate: 50 }}</div>
+						</div>
+						<div [pTooltip]="rowData[col.field]" *ngSwitchDefault>
+							<div class="hidden sm:flex">{{ rowData[col.field] | truncate: 10 }}</div>
+							<div class="sm:hidden">{{ rowData[col.field] | truncate: 50 }}</div>
+						</div>
+					</div>
+				</div>
+			</td>
+			<td>
+				<div class="flex flex-row items-center">
+					<button pButton pRipple type="button" icon="pi pi-pencil" class="p-button-rounded p-button-warning p-button-text"></button>
+					<button (click)="confirmDelete($event, [rowData])" pButton pRipple type="button" icon="pi pi-trash" class="p-button-rounded p-button-danger p-button-text"></button>
+				</div>
+			</td>
+		</tr>
+	</ng-template>
+</p-table>

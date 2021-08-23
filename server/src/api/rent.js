@@ -9,7 +9,24 @@ router.get('/pk', async (req, res) => {
 });
 
 router.get('/all', async (req, res) => {
-	res.send(await prisma.rent.findMany({ include: { rentStatus: true, receipt: true, rent_user: true, vehicle: true, rent_entry: true }, orderBy: { changedAt: 'desc', createdAt: 'desc' } }));
+	res.send(await prisma.rent.findMany({ include: { rentStatus: true, receipt: true, rent_user: true, vehicle: true, rent_entry: true }, orderBy: { pkRentStatus: 'asc' } }));
+});
+
+router.get('/stats', async (req, res) => {
+	const [stats] = await prisma.$queryRaw`
+	select distinct count(r.pkRent) rentCount, count(rt.pkReceipt) receiptCount, sum(rt.isPaid) receiptsPaidCount, sum(rt.price) priceTotal, sum(rt.currentlyPaid) paidTotal from rent r 
+	left join receipt rt on rt.pkRent = r.pkRent
+	`;
+	res.send({
+		...stats,
+		totalUserCount: await prisma.user.count(),
+		employedUsersCount: await prisma.user.count({ where: { claims: { in: ['user,employed', 'user,employed,admin'] } } }),
+		userCount: await prisma.user.count({ where: { claims: 'user' } }),
+		vehicleCount: await prisma.vehicle.count(),
+		vehiclesAvailable: await prisma.vehicle.count({ where: { pkStatus: consts.VEHICLE_STATUS.Available } }),
+		vehiclesInService: await prisma.vehicle.count({ where: { pkStatus: consts.VEHICLE_STATUS.Service } }),
+		vehiclesRented: await prisma.vehicle.count({ where: { pkStatus: consts.VEHICLE_STATUS.Rented } }),
+	});
 });
 
 router.put('/update/status', async (req, res) => {
@@ -91,7 +108,7 @@ router.post('/public/upsert', async (req, res) => {
 		}),
 	};
 	const maybeRented = await prisma.vehicle.findFirst({ where: { pkVehicle }, include: { vehicleStatus: true } });
-	if (maybeRented?.vehicleStatus?.pkVehicleStatus != consts.VEHICLE_STATUS.Available ) {
+	if (maybeRented?.vehicleStatus?.pkVehicleStatus != consts.VEHICLE_STATUS.Available) {
 		return res.status(600).send(consts.ERRORS.AlreadyRented);
 	}
 	// return res.send({});

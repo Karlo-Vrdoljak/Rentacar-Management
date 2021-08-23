@@ -21,8 +21,7 @@ interface MakeRent {
 	providedIn: 'root',
 })
 export class RentService {
-	constructor(public httpClient: HttpClient, public config: Config, public auth: AuthService) {
-	}
+	constructor(public httpClient: HttpClient, public config: Config, public auth: AuthService) {}
 
 	makeRent({ pkVehicleStatus = VEHICLE_STATUS.Rented, pkRent = null, pkVehicle, pkUserRented = this.auth.user?.pkUser ?? null, pkRentStatus = RENT_STATUS.Queued, rentFrom, rentTo, pickupLocation, dropOffLocation }: MakeRent) {
 		const req = {
@@ -37,5 +36,11 @@ export class RentService {
 			...(dropOffLocation && { dropOffLocation }),
 		};
 		return this.httpClient.post(this.config.value.API_URL + SLUG + '/public/upsert', req);
+	}
+	getStats() {
+		return this.httpClient.get(this.config.value.API_URL + SLUG + '/stats');
+	}
+	getAll() {
+		return this.httpClient.get(this.config.value.API_URL + SLUG + '/all');
 	}
 }
