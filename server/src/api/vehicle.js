@@ -7,7 +7,7 @@ router.get('/pk', async (req, res) => {
 });
 
 router.get('/all', async (req, res) => {
-	res.send(await prisma.vehicle.findMany({ include: { vehicleStatus: true } }));
+	res.send(await prisma.vehicle.findMany({ include: { vehicleStatus: true }, orderBy: { createdAt: 'desc' } }));
 });
 
 router.get('/public/one', async (req, res) => {

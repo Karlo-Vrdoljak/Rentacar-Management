@@ -1,12 +1,12 @@
 <p-table
 	#dt
-	[globalFilterFields]="['pickupLocation', 'dropOffLocation', 'address', 'rent_entry.name', 'rent_entry.lastName', 'vehicle.code', 'rent_user.name', 'rent_user.lastName', 'rentStatus.name']"
-	dataKey="pkRent"
-	[(selection)]="selectedRents"
+	[globalFilterFields]="['createdAt', 'changedAt', 'code', 'color', 'manufacturer', 'model', 'gasType', 'dateOfManufacture', 'currentKilometers', 'startingKilometers', 'vehicleStatus.name']"
+	dataKey="pkVehicle"
+	[(selection)]="selectedVehicles"
 	styleClass="p-datatable-striped rounded-lg"
 	tableStyleClass="rounded-lg"
 	[columns]="cols"
-	[value]="rents"
+	[value]="vehicles"
 	responsiveLayout="stack"
 	[paginator]="true"
 	[rows]="5"
@@ -15,10 +15,10 @@
 	[rowsPerPageOptions]="[5, 25, 50]"
 >
 	<ng-template pTemplate="caption">
-		<div class="text-semibold w-full text-2xl pb-3">Rent list</div>
+		<div class="text-semibold w-full text-2xl pb-3">Vehicle list</div>
 		<div class="flex flex-col md:flex-row md:items-center text-sm">
-			<div class="pr-2"><button (click)="addNewRent()" pButton pRipple label="New rent" type="button" icon="pi pi-plus-circle"></button></div>
-			<div class="pr-2"><button [disabled]="!selectedRents?.length" (click)="confirmDelete($event, selectedRents)" pButton pRipple label="Delete selected" type="button" icon="pi pi-trash" class="p-button-danger p-button-text"></button></div>
+			<div class="pr-2"><button (click)="addNewVehicle()" pButton pRipple label="New vehicle" type="button" icon="pi pi-plus-circle"></button></div>
+			<div class="pr-2"><button [disabled]="!selectedVehicles?.length" (click)="confirmDelete($event, selectedVehicles)" pButton pRipple label="Delete selected" type="button" icon="pi pi-trash" class="p-button-danger p-button-text"></button></div>
 			<div class="flex md:items-center">
 				<div class="pr-2">
 					<span class="p-input-icon-left p-ml-auto">
@@ -52,24 +52,11 @@
 					<div [ngSwitch]="col.field">
 						<div [pTooltip]="rowData[col.field] | date: 'dd.MM.yyyy'" class="truncate" *ngSwitchCase="'createdAt'">{{ rowData[col.field] | date: 'dd. MM. yyyy.' }}</div>
 						<div [pTooltip]="rowData[col.field] | date: 'dd.MM.yyyy'" class="truncate" *ngSwitchCase="'changedAt'">{{ rowData[col.field] | date: 'dd. MM. yyyy.' }}</div>
-						<div [pTooltip]="rowData[col.field] | date: 'dd.MM.yyyy'" class="truncate" *ngSwitchCase="'rentFrom'">{{ rowData[col.field] | date: 'dd. MM. yyyy.' }}</div>
-						<div [pTooltip]="rowData[col.field] | date: 'dd.MM.yyyy'" class="truncate" *ngSwitchCase="'rentTo'">{{ rowData[col.field] | date: 'dd. MM. yyyy.' }}</div>
-						<div class="flex items-center justify-end w-full" *ngSwitchCase="'rentStatus'">
+						<div [pTooltip]="rowData[col.field] | date: 'dd.MM.yyyy'" class="truncate" *ngSwitchCase="'dateOfManufacture'">{{ rowData[col.field] | date: 'dd. MM. yyyy.' }}</div>
+						<div class="flex items-center justify-end w-full" *ngSwitchCase="'vehicleStatus'">
 							<div class="flex w-4 items-center justify-end relative -top-7 right-0 left-1/2">
-								<app-status-icon *ngIf="rowData[col.field]?.pkRentStatus" [symbolFor]="'rent'" [status]="rowData[col.field]?.pkRentStatus"></app-status-icon>
+								<app-status-icon *ngIf="rowData[col.field]?.pkVehicleStatus" [symbolFor]="'vehicle'" [status]="rowData[col.field]?.pkVehicleStatus"></app-status-icon>
 							</div>
-						</div>
-						<div [pTooltip]="rowData[col.field]?.email" class="flex w-full items-center justify-center" *ngSwitchCase="'rent_entry'">
-							<div class="hidden sm:flex">{{ rowData[col.field]?.email | truncate: 10 }}</div>
-							<div class="sm:hidden">{{ rowData[col.field]?.email | truncate: 50 }}</div>
-						</div>
-						<div [pTooltip]="rowData[col.field]?.email" class="flex w-full items-center justify-center" *ngSwitchCase="'rent_user'">
-							<div class="hidden sm:flex">{{ rowData[col.field]?.email | truncate: 10 }}</div>
-							<div class="sm:hidden">{{ rowData[col.field]?.email | truncate: 50 }}</div>
-						</div>
-						<div [pTooltip]="rowData[col.field]?.manufacturer + ' ' + rowData[col.field]?.model" class="flex w-full items-center justify-center" *ngSwitchCase="'vehicle'">
-							<div class="hidden sm:flex">{{ rowData[col.field]?.code | truncate: 10 }}</div>
-							<div class="sm:hidden">{{ rowData[col.field]?.code | truncate: 50 }}</div>
 						</div>
 						<div [pTooltip]="rowData[col.field]" *ngSwitchDefault>
 							<div class="hidden sm:flex">{{ rowData[col.field] | truncate: 10 }}</div>
@@ -81,7 +68,7 @@
 			<td>
 				<div class="flex flex-row flex-wrap items-center">
 					<button pTooltip="Expand" (click)="expand(rowData)" pButton pRipple type="button" icon="pi pi-external-link" class="p-button-rounded p-button-text"></button>
-					<button pTooltip="Edit rent" (click)="editRent(rowData)" pButton pRipple type="button" icon="pi pi-pencil" class="p-button-rounded p-button-warning p-button-text"></button>
+					<button pTooltip="Edit Vehicle" (click)="editVehicle(rowData)" pButton pRipple type="button" icon="pi pi-pencil" class="p-button-rounded p-button-warning p-button-text"></button>
 					<button pTooltip="Change status" (click)="changeStatusRent(rowData)" pButton pRipple type="button" icon="pi pi-flag" class="p-button-rounded p-button-warning p-button-text"></button>
 					<button pTooltip="Delete" (click)="confirmDelete($event, [rowData])" pButton pRipple type="button" icon="pi pi-trash" class="p-button-rounded p-button-danger p-button-text"></button>
 				</div>

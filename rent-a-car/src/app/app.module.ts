@@ -48,6 +48,12 @@ import { AddRentComponent } from './components/_employed/rent-list/crud/add-rent
 import { ChangeStatusRentComponent } from './components/_employed/rent-list/crud/change-status-rent/change-status-rent.component';
 import { DropdownModule } from 'primeng/dropdown';
 import { ListboxModule } from 'primeng/listbox';
+import { VehicleListComponent } from './components/_employed/vehicle-list/vehicle-list.component';
+import { InsertUpdateVehicleComponent } from './components/_employed/vehicle-list/vehicle/insert-update-vehicle/insert-update-vehicle.component';
+import { ChangeStatusVehicleComponent } from './components/_employed/vehicle-list/vehicle/change-status-vehicle/change-status-vehicle.component';
+import { ViewVehicleComponent } from './components/_employed/vehicle-list/vehicle/view-vehicle/view-vehicle.component';
+import { KeyFilterModule } from 'primeng/keyfilter';
+import { InputNumberModule } from 'primeng/inputnumber';
 
 const ngxUiLoaderConfig: NgxUiLoaderConfig = {
 	bgsColor: '#95B7FF',
@@ -64,7 +70,33 @@ const ngxUiLoaderConfig: NgxUiLoaderConfig = {
 };
 
 @NgModule({
-	declarations: [TruncatePipe, AppComponent, NavComponent, FooterComponent, HeaderComponent, HomeComponent, VehicleComponent, RentVehicleComponent, LoginComponent, RegisterComponent, LoginDialogComponent, LoginPageComponent, ProfilePageComponent, StatusIconComponent, EditProfileComponent, RegisterPageComponent, DashboardPageComponent, RentListComponent, ViewRentComponent, AddRentComponent, ChangeStatusRentComponent],
+	declarations: [
+		TruncatePipe,
+		AppComponent,
+		NavComponent,
+		FooterComponent,
+		HeaderComponent,
+		HomeComponent,
+		VehicleComponent,
+		RentVehicleComponent,
+		LoginComponent,
+		RegisterComponent,
+		LoginDialogComponent,
+		LoginPageComponent,
+		ProfilePageComponent,
+		StatusIconComponent,
+		EditProfileComponent,
+		RegisterPageComponent,
+		DashboardPageComponent,
+		RentListComponent,
+		ViewRentComponent,
+		AddRentComponent,
+		ChangeStatusRentComponent,
+		VehicleListComponent,
+		InsertUpdateVehicleComponent,
+		ChangeStatusVehicleComponent,
+		ViewVehicleComponent,
+	],
 	imports: [
 		DropdownModule,
 		TableModule,
@@ -80,6 +112,7 @@ const ngxUiLoaderConfig: NgxUiLoaderConfig = {
 		NgxUiLoaderModule.forRoot(ngxUiLoaderConfig),
 		NgxUiLoaderRouterModule.forRoot({ showForeground: false }),
 		ScrollingModule,
+		KeyFilterModule,
 		AutoCompleteModule,
 		BrowserAnimationsModule,
 		CalendarModule,
@@ -92,6 +125,7 @@ const ngxUiLoaderConfig: NgxUiLoaderConfig = {
 		BrowserModule,
 		AppRoutingModule,
 		InputTextModule,
+		InputNumberModule,
 	],
 	providers: [
 		{
@@ -107,7 +141,7 @@ const ngxUiLoaderConfig: NgxUiLoaderConfig = {
 		ConfirmationService,
 		MessageService,
 	],
-	entryComponents: [ChangeStatusRentComponent, ViewRentComponent, AddRentComponent, LoginComponent, EditProfileComponent],
+	entryComponents: [InsertUpdateVehicleComponent, ChangeStatusVehicleComponent, ViewVehicleComponent, ChangeStatusRentComponent, ViewRentComponent, AddRentComponent, LoginComponent, EditProfileComponent],
 	bootstrap: [AppComponent],
 })
 export class AppModule {}

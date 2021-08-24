@@ -68,12 +68,14 @@
 	<div class="bg-white shadow-lg rounded-lg">
 		<div [ngSwitch]="tabIndex">
 			<div *ngSwitchCase="0">
-				<app-rent-list (onChange)="onChangeRentChange()" [rents]="rents"></app-rent-list>
+				<app-rent-list (onChange)="onChangeHandler()" [rents]="rents"></app-rent-list>
 			</div>
-			<div *ngSwitchCase="1">meti vozila</div>
+			<div *ngSwitchCase="1">
+				<app-vehicle-list (onChange)="onChangeHandler()" [vehicles]="vehicles"></app-vehicle-list>
+			</div>
 			<div *ngSwitchCase="2">meti ljude</div>
 			<div *ngSwitchDefault>
-				<app-rent-list (onChange)="onChangeRentChange()" [rents]="rents"></app-rent-list>
+				<app-rent-list (onChange)="onChangeHandler()" [rents]="rents"></app-rent-list>
 			</div>
 		</div>
 	</div>

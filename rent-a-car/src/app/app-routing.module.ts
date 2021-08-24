@@ -19,6 +19,7 @@ const routes: Routes = [
 	{ path: 'vehicle/rent/:pkVehicle', component: RentVehicleComponent, resolve: { pageData: RentVehicleResolver } },
 	{ path: 'profile/:pkUser', canActivate: [AuthGuard], data: { roles: USER_ROLE }, component: ProfilePageComponent, resolve: { pageData: ProfileResolver } },
 	{ path: 'dashboard', component: DashboardPageComponent, data: { roles: EMPLOYED_ROLE }, resolve: { pageData: DashboardResolver } },
+	{ path: 'dashboard/:index', component: DashboardPageComponent, data: { roles: EMPLOYED_ROLE }, resolve: { pageData: DashboardResolver } },
 	{ path: 'home', component: HomeComponent, resolve: { pageData: HomeResolver } },
 	{ path: '', redirectTo: '/home', pathMatch: 'full' },
 	{ path: '**', redirectTo: '/home', pathMatch: 'full' },

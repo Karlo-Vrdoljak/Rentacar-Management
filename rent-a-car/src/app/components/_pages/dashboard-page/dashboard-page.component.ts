@@ -8,6 +8,7 @@ import { LoaderService } from 'src/app/_services/loader.service';
 import { VehicleService } from 'src/app/_services/vehicle.service';
 import { ReceiptService } from './../../../_services/receipt.service';
 import { Vehicle } from './../../../_consts/consts';
+import { Location } from '@angular/common';
 
 @Component({
 	selector: 'app-dashboard-page',
@@ -20,7 +21,14 @@ export class DashboardPageComponent implements OnInit {
 	vehicles: Vehicle[];
 	receipts: Receipt[];
 	tabIndex: number = 0;
-	constructor(public vehicleService: VehicleService, public receiptService: ReceiptService, public loader: LoaderService, public rent: RentService, public route: ActivatedRoute, public router: Router) {}
+	constructor(public location: Location, public vehicleService: VehicleService, public receiptService: ReceiptService, public loader: LoaderService, public rent: RentService, public route: ActivatedRoute, public router: Router) {
+		route.params.subscribe((params) => {
+			const { index } = params;
+			if (index && !isNaN(index)) {
+				this.tabIndex = +index;
+			}
+		});
+	}
 
 	ngOnInit(): void {
 		this.initView(this.route.snapshot.data.pageData);
@@ -34,7 +42,7 @@ export class DashboardPageComponent implements OnInit {
 		this.receipts = receipts;
 		console.log([stats, rents, vehicles, receipts]);
 	}
-	onChangeRentChange() {
+	onChangeHandler() {
 		this.loader.startBg();
 		forkJoin([this.rent.getStats(), this.rent.getAll(), this.vehicleService.getAll(), this.receiptService.getAll()])
 			.pipe(first())

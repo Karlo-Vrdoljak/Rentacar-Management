@@ -166,8 +166,8 @@ router.post('/public/upsert', async (req, res) => {
 		);
 
 	if (pkRent) {
-		const persistedRent = await prisma.rent.findUnique({ where: { pkRent }, include: { vehicle: true } });
-		updateVehicleStatus({ pkVehicle: persistedRent.pkVehicle, pkVehicleStatus: consts.VEHICLE_STATUS.Available })
+		const persistedRent = await prisma.rent.findUnique({ where: { pkRent }, include: { vehicle: { include: { vehicleStatus: true } } } });
+		updateVehicleStatus({ pkVehicle: persistedRent.pkVehicle, pkVehicleStatus: persistedRent.vehicle.vehicleStatus.pkVehicleStatus == consts.VEHICLE_STATUS.Rented ? consts.VEHICLE_STATUS.Available : persistedRent.vehicle.vehicleStatus.pkVehicleStatus })
 			.pipe(first())
 			.subscribe((veh) => {
 				updateRent()

@@ -1,0 +1,69 @@
+<div class="flex items-center justify-center w-96">
+	<div class="p-4 w-full max-w-2xl">
+		<form [formGroup]="form">
+			<!--    vehicle rentStatus -->
+			<div class="flex flex-col py-2 w-full items-start">
+				<span class="w-full">
+					<label class="pl-1 text-sm" for="">Built on</label>
+					<p-calendar required styleClass="w-full" inputStyleClass="w-full" formControlName="dateOfManufacture" [showIcon]="true" placeholder="dd.mm.yy" dateFormat="dd.mm.yy" selectionMode="single" [readonlyInput]="false" inputId="range"></p-calendar>
+				</span>
+				<ngx-form-error class="text-red-500" [control]="form.get('dateOfManufacture')"></ngx-form-error>
+			</div>
+			<div class="flex flex-col py-2 w-full items-start">
+				<span class="p-float-label w-full">
+					<input required formControlName="color" type="text" pInputText class="w-full" />
+					<label for="">Color</label>
+				</span>
+				<ngx-form-error class="text-red-500" [control]="form.get('color')"></ngx-form-error>
+			</div>
+			<div class="flex flex-col py-2 w-full items-start">
+				<span class="p-float-label w-full">
+					<input required pKeyFilter="pnum" formControlName="startingKilometers" type="text" pInputText class="w-full" />
+					<label for="">Starting kilometers</label>
+				</span>
+				<ngx-form-error class="text-red-500" [control]="form.get('startingKilometers')"></ngx-form-error>
+			</div>
+			<div class="flex flex-col py-2 w-full items-start">
+				<span class="p-float-label w-full">
+					<input required pKeyFilter="pnum" formControlName="currentKilometers" type="text" pInputText class="w-full" />
+					<label for="">Current Kilometers</label>
+				</span>
+				<ngx-form-error class="text-red-500" [control]="form.get('currentKilometers')"></ngx-form-error>
+			</div>
+			<div class="flex flex-col py-2 w-full items-start">
+				<span class="p-float-label w-full">
+					<input required formControlName="gasType" type="text" pInputText class="w-full" />
+					<label for="">Gas type</label>
+				</span>
+				<ngx-form-error class="text-red-500" [control]="form.get('gasType')"></ngx-form-error>
+			</div>
+			<div class="flex flex-col py-2 w-full items-start">
+				<span class="p-float-label w-full">
+					<input required formControlName="manufacturer" type="text" pInputText class="w-full" />
+					<label for="">Manufacturer</label>
+				</span>
+				<ngx-form-error class="text-red-500" [control]="form.get('manufacturer')"></ngx-form-error>
+			</div>
+			<div class="flex flex-col py-2 w-full items-start">
+				<span class="p-float-label w-full">
+					<input required formControlName="model" type="text" pInputText class="w-full" />
+					<label for="">Model</label>
+				</span>
+				<ngx-form-error class="text-red-500" [control]="form.get('model')"></ngx-form-error>
+			</div>
+			<div *ngIf="!vehicle" class="flex flex-col py-2 w-full items-start">
+				<div class="w-full flex flex-col">
+					<div class="w-full">
+						<label class="pl-1 text-sm" for="horizontal">Fleet</label>
+					</div>
+					<div class="w-full">
+						<p-inputNumber inputStyleClass="w-full" formControlName="multiInsert" [showButtons]="true" buttonLayout="horizontal" inputId="horizontal" spinnerMode="horizontal" [step]="1" decrementButtonClass="p-button-secondary" incrementButtonClass="p-button-primary" incrementButtonIcon="pi pi-plus" decrementButtonIcon="pi pi-minus"> </p-inputNumber>
+					</div>
+				</div>
+			</div>
+		</form>
+		<div class="pt-8">
+			<button [disabled]="!form.valid" [loading]="loader.isLoading" (click)="save()" pButton pRipple [label]="vehicle ? 'Save Changes' : 'Add vehicle'" icon="pi pi-save" class="w-full"></button>
+		</div>
+	</div>
+</div>
