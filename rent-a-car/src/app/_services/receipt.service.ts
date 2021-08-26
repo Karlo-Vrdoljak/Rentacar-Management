@@ -27,4 +27,16 @@ export class ReceiptService {
 		};
 		return this.httpClient.put(this.config.value.API_URL + SLUG + '/update/status', req);
 	}
+	create({ pkRent, price, dateDue, currentlyPaid }) {
+		const req = { pkRent, price, dateDue, currentlyPaid };
+		return this.httpClient.post(this.config.value.API_URL + SLUG + '/create', req);
+	}
+	edit({ pkReceipt, price, dateDue, currentlyPaid }) {
+		const req = { pkReceipt, price, dateDue, currentlyPaid };
+		return this.httpClient.put(this.config.value.API_URL + SLUG + '/edit', req);
+	}
+	addPayment({ pkReceipt, currentlyPaid }) {
+		const req = { pkReceipt, deposit: currentlyPaid };
+		return this.httpClient.put(this.config.value.API_URL + SLUG + '/update/deposit', req);
+	}
 }

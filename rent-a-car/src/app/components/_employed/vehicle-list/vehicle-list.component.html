@@ -12,7 +12,6 @@
 	[rows]="5"
 	[showCurrentPageReport]="true"
 	currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries"
-	[rowsPerPageOptions]="[5, 25, 50]"
 >
 	<ng-template pTemplate="caption">
 		<div class="text-semibold w-full text-2xl pb-3">Vehicle list</div>
@@ -35,9 +34,22 @@
 			<th style="width: 3rem">
 				<p-tableHeaderCheckbox></p-tableHeaderCheckbox>
 			</th>
-			<th [pTooltip]="col.header" *ngFor="let col of columns">
-				{{ col.header | truncate: 8 }}
-			</th>
+			<ng-container *ngFor="let col of columns">
+				<ng-container [ngSwitch]="col.field">
+					<ng-container *ngSwitchCase="'vehicleStatus'">
+						<th [pSortableColumn]="'vehicleStatus.name'" [pTooltip]="col.header">
+							{{ col.header | truncate: 8 }}
+							<p-sortIcon [field]="'vehicleStatus.name'"></p-sortIcon>
+						</th>
+					</ng-container>
+					<ng-container *ngSwitchDefault>
+						<th [pSortableColumn]="col.field" [pTooltip]="col.header">
+							{{ col.header | truncate: 8 }}
+							<p-sortIcon [field]="col.field"></p-sortIcon>
+						</th>
+					</ng-container>
+				</ng-container>
+			</ng-container>
 			<th>Tools</th>
 		</tr>
 	</ng-template>

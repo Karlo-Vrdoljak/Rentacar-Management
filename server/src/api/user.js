@@ -107,6 +107,20 @@ router.post('/register', async (req, res, next) => {
 		next(error);
 	}
 });
+router.put('/claims', async (req, res, next) => {
+	const { claims, pkUser } = req.body;
+	try {
+		const user = await prisma.user.update({
+			where: { pkUser },
+			data: {
+				claims,
+			},
+		});
+		res.send(user);
+	} catch (error) {
+		next(error);
+	}
+});
 
 router.put('/update', async (req, res) => {
 	const { pkUser, email, name, lastName, phone, address, claims } = req.body;
@@ -157,7 +171,7 @@ router.put('/password', async (req, res) => {
 	}
 });
 
-router.delete('/delete', async (req, res, next) => {
+router.delete('/one', async (req, res, next) => {
 	const { pkUser, email } = req.query;
 	let where = {};
 	if (email) {

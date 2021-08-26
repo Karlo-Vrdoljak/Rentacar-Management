@@ -49,6 +49,37 @@ router.put('/update/status', async (req, res) => {
 	);
 });
 
+router.post('/create', async (req, res) => {
+	const { pkRent, price, dateDue, currentlyPaid } = req.body;
+	const rent = await prisma.rent.findUnique({ where: { pkRent }, include: { rentStatus: true } });
+	res.send(
+		await prisma.receipt.create({
+			data: {
+				currencyCode: 'HR',
+				price,
+				currentlyPaid: currentlyPaid ?? '0.00',
+				dateDue,
+				rent: { connect: { pkRent } },
+				receiptStatus: { connect: { pkReceiptStatus: rent.rentStatus.pkRentStatus == consts.RENT_STATUS.Complete ? consts.RECEIPT_STATUS.Due : consts.RECEIPT_STATUS.Waiting } },
+			},
+		})
+	);
+});
+
+router.put('/edit', async (req, res) => {
+	const { pkReceipt, price, dateDue, currentlyPaid } = req.body;
+	res.send(
+		await prisma.receipt.update({
+			where: { pkReceipt },
+			data: {
+				price,
+				dateDue,
+				currentlyPaid,
+			},
+		})
+	);
+});
+
 router.put('/update/deposit', async (req, res) => {
 	const { pkReceipt, deposit } = req.body;
 	const [mainDeposited, subDeposited] = consts.parseCurrency(deposit);
@@ -56,11 +87,12 @@ router.put('/update/deposit', async (req, res) => {
 	const receipt = await prisma.receipt.findUnique({ where: { pkReceipt } });
 	const [mainDue, subDue] = consts.parseCurrency(receipt.price);
 
-	if (mainDue + subDue / 100 - (mainDeposited + subDeposited / 100) <= consts.PAY_TOLERANCE) {
-		receipt.isPaid = 1;
-	}
 	const [currPaid, currPaidSub] = consts.parseCurrency(receipt.currentlyPaid);
 	receipt.currentlyPaid = consts.makeCurrencyString(currPaid + mainDeposited + (currPaidSub / 100 + subDeposited / 100));
+
+	if (mainDue + subDue / 100 - (currPaid + currPaidSub / 100 + mainDeposited + subDeposited / 100) <= consts.PAY_TOLERANCE) {
+		receipt.isPaid = 1;
+	}
 
 	delete receipt.pkReceipt;
 	delete receipt.pkReceiptStatus;
@@ -78,15 +110,13 @@ router.put('/update/deposit', async (req, res) => {
 	};
 
 	res.send(
-		pkRent
-			? await prisma.receipt.update({
-					where: { pkReceipt },
-					data: {
-						...receipt,
-						...connections,
-					},
-			  })
-			: {}
+		await prisma.receipt.update({
+			where: { pkReceipt },
+			data: {
+				...receipt,
+				...connections,
+			},
+		})
 	);
 });
 

@@ -1,0 +1,18 @@
+<div class="flex items-center justify-center w-96">
+	<div class="p-4 w-full max-w-2xl">
+		<form [formGroup]="form">
+			<div class="flex flex-col py-2 w-full items-start">
+				<div class="w-full">
+					<div class="text-sm mb-1" for="">Configure application claims</div>
+					<p-slider formControlName="claimLevel" [min]="1" [max]="3" [step]="1"></p-slider>
+					<div class="font-medium py-1">
+						{{ claimsMap[form.get('claimLevel').value] }}
+					</div>
+				</div>
+			</div>
+		</form>
+		<div class="pt-8">
+			<button [loading]="loader.isLoading" (click)="save()" pButton pRipple label="Set status" icon="pi pi-save" class="w-full"></button>
+		</div>
+	</div>
+</div>

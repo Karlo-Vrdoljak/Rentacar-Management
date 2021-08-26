@@ -49,4 +49,10 @@ export class VehicleService {
 		};
 		return this.httpClient.put(this.config.value.API_URL + SLUG + '/update/status', req);
 	}
+	getByRent({ pkRent }): Observable<any> {
+		const req = {
+			pkRent,
+		};
+		return this.httpClient.get(this.config.value.API_URL + SLUG + '/vehicles/rent', { params: req });
+	}
 }

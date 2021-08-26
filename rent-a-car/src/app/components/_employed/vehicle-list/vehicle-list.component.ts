@@ -5,7 +5,7 @@ import { Table } from 'primeng/table';
 import { forkJoin, from, Subject } from 'rxjs';
 import { concatMap, first, takeUntil } from 'rxjs/operators';
 import { BaseClass } from 'src/app/_abstract/base.class';
-import { Vehicle } from 'src/app/_consts/consts';
+import { EInteractionReducer, Vehicle } from 'src/app/_consts/consts';
 import { LoaderService } from 'src/app/_services/loader.service';
 import { RentService } from 'src/app/_services/rent.service';
 import { use } from 'typescript-mix';
@@ -13,6 +13,8 @@ import { ONE_SECOND } from './../../../_consts/consts';
 import { VehicleService } from './../../../_services/vehicle.service';
 import { InsertUpdateVehicleComponent } from './vehicle/insert-update-vehicle/insert-update-vehicle.component';
 import { ChangeStatusVehicleComponent } from './vehicle/change-status-vehicle/change-status-vehicle.component';
+import { ViewVehicleComponent } from './vehicle/view-vehicle/view-vehicle.component';
+import { Config } from 'src/app/_services/config';
 
 export interface VehicleListComponent extends BaseClass {}
 @Component({
@@ -28,7 +30,7 @@ export class VehicleListComponent implements OnInit {
 	@Output() onChange = new EventEmitter<any>();
 	selectedVehicles: Vehicle[];
 	filter: string | null;
-	constructor(public vehicleService: VehicleService, public rent: RentService, public loader: LoaderService, public toast: MessageService, public rentService: RentService, public ds: DialogService, public cs: ConfirmationService) {
+	constructor(public config: Config, public vehicleService: VehicleService, public rent: RentService, public loader: LoaderService, public toast: MessageService, public rentService: RentService, public ds: DialogService, public cs: ConfirmationService) {
 		this.destroy = new Subject();
 	}
 
@@ -65,11 +67,13 @@ export class VehicleListComponent implements OnInit {
 							console.log(data);
 							this.showToast({ toast: this.toast, detail: 'Deleted successfully!' });
 							this.onChange.emit({});
+							this.config.nextInteraction({ id: EInteractionReducer.stateChanged });
 						},
 						(err) => {
 							console.log(err);
 							this.loader.showToast({ toast: this.toast, severity: 'error', summary: 'Error', detail: 'Cannot delete this vehicle, remove all rents associated with it first!' });
 							this.onChange.emit({});
+							this.config.nextInteraction({ id: EInteractionReducer.stateChanged });
 							this.loader.stop();
 						}
 					);
@@ -106,12 +110,14 @@ export class VehicleListComponent implements OnInit {
 
 								this.loader.stop(vehicle.multiInsert > 1 ? 'Vehicles created successfully!' : 'Vehicle created successfully!');
 								this.onChange.emit({});
+								this.config.nextInteraction({ id: EInteractionReducer.stateChanged });
 							}
 						},
 						(err) => {
 							console.error(err);
 							this.loader.stop();
 							this.onChange.emit({});
+							this.config.nextInteraction({ id: EInteractionReducer.stateChanged });
 						}
 					);
 			}
@@ -121,7 +127,14 @@ export class VehicleListComponent implements OnInit {
 			}, ONE_SECOND);
 		});
 	}
-	expand(vehicle: Vehicle) {}
+	expand(vehicle: Vehicle) {
+		const ref = this.ds.open(ViewVehicleComponent, { header: `${vehicle.code} rents`, width: '95vw', height: '90vh', modal: true, data: { vehicle } });
+		ref.onClose.subscribe((result) => {
+			setTimeout(() => {
+				ref.destroy();
+			}, ONE_SECOND);
+		});
+	}
 	editVehicle(vehicle: Vehicle) {
 		const ref = this.ds.open(InsertUpdateVehicleComponent, { header: 'Edit vehicle', modal: true, data: { vehicle } });
 		ref.onClose.subscribe((result) => {
@@ -136,11 +149,13 @@ export class VehicleListComponent implements OnInit {
 							this.loader.stop('Vehicle details changed successfully!');
 
 							this.onChange.emit({});
+							this.config.nextInteraction({ id: EInteractionReducer.stateChanged });
 						},
 						(err) => {
 							console.error(err);
 							this.loader.stop();
 							this.onChange.emit({});
+							this.config.nextInteraction({ id: EInteractionReducer.stateChanged });
 						}
 					);
 			}
@@ -164,10 +179,12 @@ export class VehicleListComponent implements OnInit {
 						(data) => {
 							this.loader.stop('Status changed successfully!');
 							this.onChange.emit({});
+							this.config.nextInteraction({ id: EInteractionReducer.stateChanged });
 						},
 						(err) => {
 							this.loader.stop();
 							this.onChange.emit({});
+							this.config.nextInteraction({ id: EInteractionReducer.stateChanged });
 						}
 					);
 			}

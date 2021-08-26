@@ -1,0 +1,53 @@
+<div class="relative mx-auto">
+	<div class="w-full text-lg font-sans p-2 lg:p-4">
+		<div class="font-semibold text-gray-800 flex flex-row flex-wrap items-center">
+			<div class="flex pb-4 flex-wrap flex-row w-full items-center justify-between">
+				<button [disabled]="isRestricted(rent.rentStatus?.pkRentStatus == rentStatus.Complete, auth)" pTooltip="Edit rent" (click)="editRent()" pButton pRipple type="button" icon="pi pi-pencil" class="p-button-rounded p-button-warning p-button-text"></button>
+				<button [disabled]="isRestricted(rent.rentStatus?.pkRentStatus == rentStatus.Complete, auth)" pTooltip="Change status" (click)="changeStatusRent()" pButton pRipple type="button" icon="pi pi-flag" class="p-button-rounded p-button-warning p-button-text"></button>
+				<button [disabled]="isRestricted(rent.rentStatus?.pkRentStatus == rentStatus.Complete, auth)" pTooltip="Delete" (click)="confirmDelete($event, [rent])" pButton pRipple type="button" icon="pi pi-trash" class="p-button-rounded p-button-danger p-button-text"></button>
+			</div>
+			<div class="flex flex-wrap flex-row w-full items-center justify-between">
+				<div class="pr22"><span class="font-normal">Renting from</span></div>
+				<div>{{ rent.rentFrom || '-' | date: 'dd. MM. yyyy.' }}</div>
+			</div>
+			<div class="flex flex-wrap flex-row w-full items-center justify-between">
+				<div class="pr22"><span class="font-normal">Renting to </span></div>
+				<div>{{ rent.rentTo || '-' | date: 'dd. MM. yyyy.' }}</div>
+			</div>
+			<div class="flex flex-wrap flex-row w-full items-center justify-between">
+				<div class="pr22"><span class="font-normal">Picked up at</span></div>
+				<div>{{ rent.pickupLocation || '-' }}</div>
+			</div>
+			<div class="flex flex-wrap flex-row w-full items-center justify-between">
+				<div class="pr22"><span class="font-normal">Dropoff on</span></div>
+				<div>{{ rent?.dropOffLocation || '-' }}</div>
+			</div>
+			<div class="flex flex-wrap flex-row w-full items-center justify-between">
+				<div class="pr22"><span class="font-normal">Rent status</span></div>
+				<div>{{ rent?.rentStatus?.name || '-' }}</div>
+			</div>
+			<div class="flex flex-row items-center">
+				<div class="flex flex-col pt-6 pb-2 text-base justify-start text-gray-800">
+					<div class="text-lg">Renting user</div>
+					<div class="flex items-center w-full">
+						<div class="flex items-center pr-2"><span class="material-icons text-green-800">person</span></div>
+						<div class="flex items-center font-semibold">{{ rent?.rent_user?.name }} {{ rent?.rent_user?.lastName }}</div>
+					</div>
+					<div class="flex items-center w-full">
+						<div class="flex items-center pr-2"><span class="material-icons text-green-800">email</span></div>
+						<div class="flex items-center font-semibold">{{ rent?.rent_user?.email }}</div>
+					</div>
+					<div class="flex items-center w-full">
+						<div class="flex items-center pr-2"><span class="material-icons text-green-800">phone</span></div>
+						<div class="flex items-center font-semibold">{{ rent?.rent_user?.phone }}</div>
+					</div>
+					<div class="flex items-center w-full">
+						<div class="flex items-center pr-2"><span class="material-icons text-green-800">pin</span></div>
+						<div class="flex items-center font-semibold">{{ rent?.rent_user?.address }}</div>
+					</div>
+				</div>
+			</div>
+		</div>
+		<app-status-icon *ngIf="rent?.rentStatus?.pkRentStatus" symbolFor="rent" [status]="rent?.rentStatus?.pkRentStatus"></app-status-icon>
+	</div>
+</div>

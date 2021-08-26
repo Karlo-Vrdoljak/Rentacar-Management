@@ -1,7 +1,8 @@
 import { Component, OnDestroy } from '@angular/core';
 import { ConfirmationService, MessageService } from 'primeng/api';
 import { Subject } from 'rxjs';
-import { ONE_SECOND, RENT_STATUS, VEHICLE_STATUS } from '../_consts/consts';
+import { ONE_SECOND, RENT_STATUS, User, VEHICLE_STATUS } from '../_consts/consts';
+import { AuthService } from '../_services/auth.service';
 import { RECEIPT_STATUS } from './../_consts/consts';
 
 @Component({
@@ -30,8 +31,8 @@ export abstract class BaseClass implements OnDestroy {
 		toast.clear();
 		toast.add({ severity, summary, detail, life: ONE_SECOND * 5 });
 	}
-	nextMonth() {
-		const d = new Date();
+	nextMonth(defaultDate?: Date) {
+		const d = defaultDate ? new Date(defaultDate) : new Date();
 		d.setDate(d.getDate() + 31);
 		return d;
 	}
@@ -51,5 +52,12 @@ export abstract class BaseClass implements OnDestroy {
 	}
 	isValidDate(date) {
 		return !isNaN(Date.parse(date));
+	}
+	isRestricted(bool: boolean, auth: AuthService, ui = false) {
+		const result = auth.isAdmin() ? true : bool;
+		return ui ? !result : result;
+	}
+	parseCurrency(price) {
+		return `${price}`.includes('.') ? price : price + '.00';
 	}
 }

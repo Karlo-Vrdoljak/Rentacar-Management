@@ -50,3 +50,30 @@
 		</span>
 	</div>
 </ng-container>
+
+<ng-container *ngIf="symbolFor == 'receipt'">
+	<div *ngIf="status == receiptStatus.Waiting" class="absolute top-5 -right-2 h-4 w-4">
+		<span pTooltip="Waiting" class="flex h-4 w-4">
+			<span [class]="'animate-ping absolute inline-flex h-full w-full rounded-full opacity-75 ' + 'bg-' + receiptStatus.WaitingColor"></span>
+			<span [class]="'relative inline-flex rounded-full h-4 w-4 ' + 'bg-' + receiptStatus.WaitingColor"></span>
+		</span>
+	</div>
+	<div *ngIf="status == receiptStatus.Paid" class="absolute top-5 -right-2 h-4 w-4">
+		<span pTooltip="Paid" class="flex h-4 w-4">
+			<span [class]="'animate-ping absolute inline-flex h-full w-full rounded-full opacity-75 ' + 'bg-' + receiptStatus.PaidColor"></span>
+			<span [class]="'relative inline-flex rounded-full h-4 w-4 ' + 'bg-' + receiptStatus.PaidColor"></span>
+		</span>
+	</div>
+	<div *ngIf="status == receiptStatus.Late" class="absolute top-5 -right-2 h-4 w-4">
+		<span pTooltip="Late" class="flex h-4 w-4">
+			<span [class]="'animate-ping absolute inline-flex h-full w-full rounded-full opacity-75 ' + 'bg-' + receiptStatus.LateColor"></span>
+			<span [class]="'relative inline-flex rounded-full h-4 w-4 ' + 'bg-' + receiptStatus.LateColor"></span>
+		</span>
+	</div>
+	<div *ngIf="status == receiptStatus.Due" class="absolute top-5 -right-2 h-4 w-4">
+		<span pTooltip="Due" class="flex h-4 w-4">
+			<span [class]="'animate-ping absolute inline-flex h-full w-full rounded-full opacity-75 ' + 'bg-' + receiptStatus.DueColor"></span>
+			<span [class]="'relative inline-flex rounded-full h-4 w-4 ' + 'bg-' + receiptStatus.DueColor"></span>
+		</span>
+	</div>
+</ng-container>

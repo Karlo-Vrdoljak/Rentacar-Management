@@ -1,1 +1,12 @@
-<p>view-vehicle works!</p>
+<div class="flex w-full flex-col items-center justify-between lg:flex-row">
+	<div class="w-full lg:p-2 lg:w-1/4">
+		<div class="border-2 border-dashed border-300 rounded-lg">
+			<app-vehicle [button]="false" [vehicle]="vehicle"></app-vehicle>
+		</div>
+	</div>
+	<div class="w-full lg:p-2 lg:w-3/4">
+		<div class="border-2 border-dashed border-300 rounded-lg">
+			<app-rent-list class="w-full" [rents]="rents"></app-rent-list>
+		</div>
+	</div>
+</div>

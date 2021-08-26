@@ -33,4 +33,24 @@ export class UserService {
 		};
 		return this.httpClient.put(this.config.value.API_URL + SLUG + '/update', req);
 	}
+	deleteOne({ pkUser }) {
+		const req = {
+			pkUser,
+		};
+		return this.httpClient.delete(this.config.value.API_URL + SLUG + '/one', { params: req });
+	}
+	register({ email, password }) {
+		const req = {
+			email,
+			password,
+		};
+		return this.httpClient.post(this.config.value.API_URL + SLUG + '/register', req);
+	}
+	updateClaims({ claims, pkUser }) {
+		const req = {
+			claims,
+			pkUser,
+		};
+		return this.httpClient.put(this.config.value.API_URL + SLUG + '/claims', req);
+	}
 }

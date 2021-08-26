@@ -3,13 +3,17 @@ import { express, prisma } from '../../app.module.js';
 import { consts } from '/users/1karl/documents/github/rentacar-management/server/app.module.js';
 const router = express.Router();
 
-router.get('/pk', async (req, res) => {
+router.get('/one', async (req, res) => {
 	const { pkRent } = req.query;
-	res.send(await prisma.rent.findUnique({ where: { pkRent }, include: { rentStatus: true, vehicle: true, receipt: true, rent_user: true, rent_entry: true } }));
+	res.send(await prisma.rent.findUnique({ where: { pkRent }, include: { rentStatus: true, vehicle: { include: { vehicleStatus: true } }, receipt: { include: { receiptStatus: true } }, rent_user: true, rent_entry: true } }));
 });
 
 router.get('/all', async (req, res) => {
-	res.send(await prisma.rent.findMany({ include: { rentStatus: true, receipt: true, rent_user: true, vehicle: true, rent_entry: true }, orderBy: { pkRentStatus: 'asc' } }));
+	res.send(await prisma.rent.findMany({ include: { rentStatus: true, receipt: { include: { receiptStatus: true } }, rent_user: true, vehicle: { include: { vehicleStatus: true } }, rent_entry: true }, orderBy: { changedAt: 'desc' } }));
+});
+router.get('/all/vehicle', async (req, res) => {
+	const { pkVehicle } = req.query;
+	res.send(await prisma.rent.findMany({ where: { pkVehicle }, include: { rentStatus: true, receipt: { include: { receiptStatus: true } }, rent_user: true, vehicle: true, rent_entry: true }, orderBy: { changedAt: 'desc' } }));
 });
 
 router.get('/stats', async (req, res) => {
@@ -29,20 +33,54 @@ router.get('/stats', async (req, res) => {
 	});
 });
 
+router.put('/update/kilometers', async (req, res) => {
+	const { pkRent, currentKilometers } = req.body;
+	const rent = await prisma.rent.findUnique({ where: { pkRent }, include: { vehicle: true } });
+	await prisma.rent.update({
+		where: { pkRent },
+		data: {
+			rentCompleteKilometers: currentKilometers,
+		},
+	});
+	await prisma.vehicle.update({
+		where: { pkVehicle: rent.vehicle.pkVehicle },
+		data: {
+			currentKilometers,
+		},
+	});
+	res.send(await prisma.rent.findUnique({ where: { pkRent }, include: { vehicle: true } }));
+});
+
 router.put('/update/status', async (req, res) => {
 	const { pkRent, pkRentStatus } = req.body;
-	res.send(
-		pkRent
-			? await prisma.rent.update({
-					where: { pkRent },
-					data: {
-						rentStatus: {
-							connect: { pkRentStatus },
-						},
+	if (pkRentStatus == consts.RENT_STATUS.Complete) {
+		const rent = await prisma.rent.findUnique({ where: { pkRent }, include: { receipt: true } });
+		const receipt = await prisma.receipt.findFirst({ where: { pkRent } });
+		if (rent.receipt?.length && receipt) {
+			const handleStatus = () => {
+				if (receipt.isPaid) {
+					return consts.RECEIPT_STATUS.Paid;
+				} else return receipt.dateDue < new Date() ? consts.RECEIPT_STATUS.Late : consts.RECEIPT_STATUS.Due;
+			};
+			await prisma.receipt.update({
+				where: { pkReceipt: rent.receipt[0].pkReceipt },
+				data: {
+					receiptStatus: {
+						connect: { pkReceiptStatus: handleStatus() },
 					},
-			  })
-			: {}
-	);
+				},
+			});
+		}
+	}
+	const updated = await prisma.rent.update({
+		where: { pkRent },
+		data: {
+			rentStatus: {
+				connect: { pkRentStatus },
+			},
+		},
+	});
+	res.send(await prisma.rent.findUnique({ where: { pkRent }, include: { vehicle: true } }));
 });
 
 router.put('/update/vehicle', async (req, res) => {
@@ -107,11 +145,6 @@ router.post('/public/upsert', async (req, res) => {
 			},
 		}),
 	};
-	const maybeRented = await prisma.vehicle.findFirst({ where: { pkVehicle }, include: { vehicleStatus: true } });
-	if (maybeRented?.vehicleStatus?.pkVehicleStatus != consts.VEHICLE_STATUS.Available) {
-		return res.status(600).send(consts.ERRORS.AlreadyRented);
-	}
-	// return res.send({});
 
 	const createRent = () =>
 		from(
@@ -181,6 +214,10 @@ router.post('/public/upsert', async (req, res) => {
 					);
 			});
 	} else {
+		const maybeRented = await prisma.vehicle.findFirst({ where: { pkVehicle }, include: { vehicleStatus: true } });
+		if (maybeRented?.vehicleStatus?.pkVehicleStatus != consts.VEHICLE_STATUS.Available) {
+			return res.status(600).send(consts.ERRORS.AlreadyRented);
+		}
 		createRent()
 			.pipe(first())
 			.subscribe((rent) =>

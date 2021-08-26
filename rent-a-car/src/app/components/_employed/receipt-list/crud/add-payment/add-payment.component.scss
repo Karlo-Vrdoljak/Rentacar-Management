@@ -1,0 +1,7 @@
+:host ::ng-deep {
+  p-inputNumber {
+    > span {
+      width: 100%;
+    }
+  }
+}

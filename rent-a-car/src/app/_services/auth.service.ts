@@ -92,4 +92,14 @@ export class AuthService {
 		}
 		return false;
 	}
+	isAdmin() {
+		const claims = this.user?.claims;
+		if (claims) {
+			const tokens = claims.split(',');
+			if (tokens.includes('admin')) {
+				return true;
+			}
+		}
+		return false;
+	}
 }

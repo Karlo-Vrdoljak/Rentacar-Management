@@ -1,0 +1,63 @@
+<p-table #dt [globalFilterFields]="['createdAt', 'changedAt', 'email', 'name', 'lastName', 'phone', 'address', 'claims']" dataKey="pkRent" [(selection)]="selectedUsers" styleClass="p-datatable-striped rounded-lg" tableStyleClass="rounded-lg" [columns]="cols" [value]="users" responsiveLayout="stack" [paginator]="true" [rows]="5" [showCurrentPageReport]="true" currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries">
+	<ng-template pTemplate="caption">
+		<div class="text-semibold w-full text-2xl pb-3">User list</div>
+		<div class="flex flex-col md:flex-row md:items-center text-sm">
+			<div class="pr-2"><button (click)="addNewRent()" pButton pRipple label="New rent" type="button" icon="pi pi-plus-circle"></button></div>
+			<div class="pr-2"><button [disabled]="!selectedUsers?.length" (click)="confirmDelete($event, selectedUsers)" pButton pRipple label="Delete selected" type="button" icon="pi pi-trash" class="p-button-danger p-button-text"></button></div>
+			<div class="flex md:items-center">
+				<div class="pr-2">
+					<span class="p-input-icon-left p-ml-auto">
+						<i class="pi pi-search"></i>
+						<input pInputText [(ngModel)]="filter" type="text" (input)="dt.filterGlobal(filter, 'contains')" placeholder="Search keyword" />
+					</span>
+				</div>
+				<div class="pr-2"><button pRipple pButton class="p-button-rounded p-button-text" icon="pi pi-filter-slash" (click)="clear(dt)"></button></div>
+			</div>
+		</div>
+	</ng-template>
+	<ng-template pTemplate="header" let-columns>
+		<tr>
+			<th style="width: 3rem">
+				<p-tableHeaderCheckbox></p-tableHeaderCheckbox>
+			</th>
+			<ng-container *ngFor="let col of columns">
+				<ng-container [ngSwitch]="col.field">
+					<ng-container *ngSwitchDefault>
+						<th [pSortableColumn]="col.field" [pTooltip]="col.header">
+							{{ col.header | truncate: 8 }}
+							<p-sortIcon [field]="col.field"></p-sortIcon>
+						</th>
+					</ng-container>
+				</ng-container>
+			</ng-container>
+			<th>Tools</th>
+		</tr>
+	</ng-template>
+	<ng-template pTemplate="body" let-rowData let-columns="columns">
+		<tr>
+			<td>
+				<p-tableCheckbox [value]="rowData"></p-tableCheckbox>
+			</td>
+			<td *ngFor="let col of columns">
+				<div class="flex flex-row items-center flex-wrap w-full justify-between">
+					<div class="sm:hidden font-semibold">{{ col.field }}</div>
+					<div [ngSwitch]="col.field">
+						<div [pTooltip]="rowData[col.field] | date: 'dd.MM.yyyy'" class="truncate" *ngSwitchCase="'createdAt'">{{ rowData[col.field] | date: 'dd. MM. yyyy.' }}</div>
+						<div [pTooltip]="rowData[col.field] | date: 'dd.MM.yyyy'" class="truncate" *ngSwitchCase="'changedAt'">{{ rowData[col.field] | date: 'dd. MM. yyyy.' }}</div>
+						<div [pTooltip]="rowData[col.field]" *ngSwitchDefault>
+							<div class="hidden sm:flex">{{ rowData[col.field] | truncate: 10 }}</div>
+							<div class="sm:hidden">{{ rowData[col.field] | truncate: 50 }}</div>
+						</div>
+					</div>
+				</div>
+			</td>
+			<td>
+				<div class="flex flex-row flex-wrap items-center">
+					<button pTooltip="Expand" (click)="expand(rowData)" pButton pRipple type="button" icon="pi pi-external-link" class="p-button-rounded p-button-text"></button>
+					<button pTooltip="Edit user" (click)="editUser(rowData)" pButton pRipple type="button" icon="pi pi-pencil" class="p-button-rounded p-button-warning p-button-text"></button>
+					<button pTooltip="Delete" (click)="confirmDelete($event, [rowData])" pButton pRipple type="button" icon="pi pi-trash" class="p-button-rounded p-button-danger p-button-text"></button>
+				</div>
+			</td>
+		</tr>
+	</ng-template>
+</p-table>

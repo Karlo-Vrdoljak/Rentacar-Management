@@ -1,0 +1,16 @@
+<div class="flex items-center justify-center w-96">
+	<div class="p-4 w-full max-w-2xl">
+		<form [formGroup]="form">
+			<div class="flex flex-col py-2 w-full items-start">
+				<span class="p-float-label w-full">
+					<input required pKeyFilter="pnum" formControlName="currentKilometers" type="text" pInputText class="w-full" />
+					<label for="">Current Kilometers</label>
+				</span>
+				<ngx-form-error class="text-red-500" [control]="form.get('currentKilometers')"></ngx-form-error>
+			</div>
+		</form>
+		<div class="pt-8">
+			<button [disabled]="!form.valid" [loading]="loader.isLoading" (click)="save()" pButton pRipple [label]="'Save Changes'" icon="pi pi-save" class="w-full"></button>
+		</div>
+	</div>
+</div>

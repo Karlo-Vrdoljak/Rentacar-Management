@@ -1,5 +1,5 @@
-import { cors, bodyParser, consts, dotenv, express, rentApi, receiptApi, security, userApi, vehicleApi } from './app.module.js';
-import findLateReceiptsCRON from './src/cron/findLateReceipts.js';
+import { bodyParser, consts, cors, dotenv, express, receiptApi, rentApi, security, userApi, vehicleApi } from './app.module.js';
+import { findLateReceiptsCRON, findLateRentsCRON } from './src/cron/findLateReceipts.js';
 
 dotenv.config();
 
@@ -41,3 +41,5 @@ app.listen(port, () => {
 });
 
 findLateReceiptsCRON();
+findLateRentsCRON();
+// findCompletedRentsAndFixStatusReceiptCRON();

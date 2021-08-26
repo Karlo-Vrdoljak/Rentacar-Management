@@ -13,7 +13,7 @@ import { ReceiptService } from './../_services/receipt.service';
 export class DashboardResolver implements Resolve<any> {
 	constructor(public receiptService: ReceiptService, public userService: UserService, public rent: RentService, public vehicleService: VehicleService) {}
 	resolve(route: ActivatedRouteSnapshot, state: RouterStateSnapshot) {
-		return forkJoin([this.rent.getStats(), this.rent.getAll(), this.vehicleService.getAll(), this.receiptService.getAll()]).pipe(
+		return forkJoin([this.rent.getStats(), this.rent.getAll(), this.vehicleService.getAll(), this.receiptService.getAll(), this.userService.getAll()]).pipe(
 			catchError((err, caught) => {
 				return of([true]);
 			})

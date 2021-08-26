@@ -12,7 +12,6 @@
 	[rows]="5"
 	[showCurrentPageReport]="true"
 	currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries"
-	[rowsPerPageOptions]="[5, 25, 50]"
 >
 	<ng-template pTemplate="caption">
 		<div class="text-semibold w-full text-2xl pb-3">Rent list</div>
@@ -35,9 +34,41 @@
 			<th style="width: 3rem">
 				<p-tableHeaderCheckbox></p-tableHeaderCheckbox>
 			</th>
-			<th [pTooltip]="col.header" *ngFor="let col of columns">
-				{{ col.header | truncate: 8 }}
-			</th>
+			<ng-container *ngFor="let col of columns">
+				<ng-container [ngSwitch]="col.field">
+					<ng-container *ngSwitchCase="'rentStatus'">
+						<th [pSortableColumn]="'rentStatus.name'" [pTooltip]="col.header">
+							{{ col.header | truncate: 8 }}
+							<p-sortIcon [field]="'rentStatus.name'"></p-sortIcon>
+						</th>
+					</ng-container>
+					<ng-container *ngSwitchCase="'rent_entry'">
+						<th [pSortableColumn]="'rent_entry.email'" [pTooltip]="col.header">
+							{{ col.header | truncate: 8 }}
+							<p-sortIcon [field]="'rent_entry.email'"></p-sortIcon>
+						</th>
+					</ng-container>
+					<ng-container *ngSwitchCase="'rent_user'">
+						<th [pSortableColumn]="'rent_user.email'" [pTooltip]="col.header">
+							{{ col.header | truncate: 8 }}
+							<p-sortIcon [field]="'rent_user.email'"></p-sortIcon>
+						</th>
+					</ng-container>
+					<ng-container *ngSwitchCase="'vehicle'">
+						<th [pSortableColumn]="'vehicle.code'" [pTooltip]="col.header">
+							{{ col.header | truncate: 8 }}
+							<p-sortIcon [field]="'vehicle.code'"></p-sortIcon>
+						</th>
+					</ng-container>
+					<ng-container *ngSwitchDefault>
+						<th [pSortableColumn]="col.field" [pTooltip]="col.header">
+							{{ col.header | truncate: 8 }}
+							<p-sortIcon [field]="col.field"></p-sortIcon>
+						</th>
+					</ng-container>
+				</ng-container>
+			</ng-container>
+
 			<th>Tools</th>
 		</tr>
 	</ng-template>
@@ -81,9 +112,9 @@
 			<td>
 				<div class="flex flex-row flex-wrap items-center">
 					<button pTooltip="Expand" (click)="expand(rowData)" pButton pRipple type="button" icon="pi pi-external-link" class="p-button-rounded p-button-text"></button>
-					<button pTooltip="Edit rent" (click)="editRent(rowData)" pButton pRipple type="button" icon="pi pi-pencil" class="p-button-rounded p-button-warning p-button-text"></button>
-					<button pTooltip="Change status" (click)="changeStatusRent(rowData)" pButton pRipple type="button" icon="pi pi-flag" class="p-button-rounded p-button-warning p-button-text"></button>
-					<button pTooltip="Delete" (click)="confirmDelete($event, [rowData])" pButton pRipple type="button" icon="pi pi-trash" class="p-button-rounded p-button-danger p-button-text"></button>
+					<button [disabled]="isRestricted(rowData?.pkRentStatus == rentStatus.Complete, auth)" pTooltip="Edit rent" (click)="editRent(rowData)" pButton pRipple type="button" icon="pi pi-pencil" class="p-button-rounded p-button-warning p-button-text"></button>
+					<button [disabled]="isRestricted(rowData?.pkRentStatus == rentStatus.Complete, auth)" pTooltip="Change status" (click)="changeStatusRent(rowData)" pButton pRipple type="button" icon="pi pi-flag" class="p-button-rounded p-button-warning p-button-text"></button>
+					<button [disabled]="isRestricted(rowData?.pkRentStatus == rentStatus.Complete, auth)" pTooltip="Delete" (click)="confirmDelete($event, [rowData])" pButton pRipple type="button" icon="pi pi-trash" class="p-button-rounded p-button-danger p-button-text"></button>
 				</div>
 			</td>
 		</tr>

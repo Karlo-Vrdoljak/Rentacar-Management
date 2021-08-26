@@ -1,1 +1,17 @@
-<p>view-rent works!</p>
+<div class="flex w-full flex-col items-center justify-between lg:flex-row">
+	<div class="w-full lg:p-2 lg:w-1/4">
+		<div class="border-2 border-dashed border-300 rounded-lg">
+			<app-rent [rent]="rent"></app-rent>
+		</div>
+	</div>
+	<div class="w-full lg:p-2 lg:w-2/4">
+		<div class="border-2 border-dashed border-300 rounded-lg">
+			<app-receipt-list [rent]="rent" [receipt]="rent?.receipt ?? []"></app-receipt-list>
+		</div>
+	</div>
+	<div class="w-full lg:p-2 lg:w-1/4">
+		<div *ngIf="rent.vehicle" class="border-2 relative border-dashed border-300 rounded-lg">
+			<app-vehicle [button]="false" class="w-full" [vehicle]="rent.vehicle"></app-vehicle>
+		</div>
+	</div>
+</div>

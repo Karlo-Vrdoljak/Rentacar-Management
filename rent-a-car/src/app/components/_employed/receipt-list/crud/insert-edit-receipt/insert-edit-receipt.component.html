@@ -1,0 +1,32 @@
+<div class="flex items-center justify-center w-96">
+	<div class="p-4 w-full max-w-2xl">
+		<form [formGroup]="form">
+			<!--    vehicle rentStatus -->
+			<div class="flex flex-col py-2 w-full items-start">
+				<span class="w-full">
+					<label class="pl-1 text-sm" for="">Date due</label>
+					<p-calendar appendTo="body" required styleClass="w-full" inputStyleClass="w-full" formControlName="dateDue" [showIcon]="true" placeholder="dd.mm.yy" dateFormat="dd.mm.yy" selectionMode="single" [readonlyInput]="false" inputId="range"></p-calendar>
+				</span>
+				<ngx-form-error class="text-red-500" [control]="form.get('dateDue')"></ngx-form-error>
+			</div>
+
+			<div class="flex flex-col py-2 w-full items-start">
+				<span class="p-float-label w-full">
+					<p-inputNumber onfocus="this.select()" inputStyleClass="w-full" formControlName="price" mode="decimal" suffix=" HRK" [minFractionDigits]="2"> </p-inputNumber>
+					<label for="">Price to pay</label>
+				</span>
+				<ngx-form-error class="text-red-500" [control]="form.get('price')"></ngx-form-error>
+			</div>
+			<div class="flex flex-col py-2 w-full items-start">
+				<span class="p-float-label w-full">
+					<p-inputNumber onfocus="this.select()" inputStyleClass="w-full" formControlName="currentlyPaid" mode="decimal" suffix=" HRK" [minFractionDigits]="2"> </p-inputNumber>
+					<label for="">Currenty paid</label>
+				</span>
+				<ngx-form-error class="text-red-500" [control]="form.get('currentlyPaid')"></ngx-form-error>
+			</div>
+		</form>
+		<div class="pt-8">
+			<button [disabled]="!form.valid" [loading]="loader.isLoading" (click)="save()" pButton pRipple [label]="!receipt ? 'Save Changes' : 'Create receipt'" icon="pi pi-save" class="w-full"></button>
+		</div>
+	</div>
+</div>

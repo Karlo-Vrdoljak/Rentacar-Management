@@ -1,5 +1,6 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
+import { Observable } from 'rxjs';
 import { RENT_STATUS, VEHICLE_STATUS } from '../_consts/consts';
 import { AuthService } from './auth.service';
 import { Config } from './config';
@@ -49,11 +50,27 @@ export class RentService {
 		};
 		return this.httpClient.delete(this.config.value.API_URL + SLUG + '/one', { params: req });
 	}
-	changeStatusRent({ pkRent, rentStatus }) {
+	changeStatusRent({ pkRent, rentStatus }): Observable<any> {
 		const req = {
 			pkRent,
 			pkRentStatus: rentStatus,
 		};
 		return this.httpClient.put(this.config.value.API_URL + SLUG + '/update/status', req);
+	}
+	getByVehicle({ pkVehicle }): Observable<any> {
+		const req = {
+			pkVehicle,
+		};
+		return this.httpClient.get(this.config.value.API_URL + SLUG + '/all/vehicle', { params: req });
+	}
+	getOne({ pkRent }) {
+		const req = {
+			pkRent,
+		};
+		return this.httpClient.get(this.config.value.API_URL + SLUG + '/one', { params: req });
+	}
+	updateKilometers({ pkRent, currentKilometers }) {
+		const req = { pkRent, currentKilometers };
+		return this.httpClient.put(this.config.value.API_URL + SLUG + '/update/kilometers', req);
 	}
 }

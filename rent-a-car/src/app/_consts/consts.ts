@@ -26,14 +26,14 @@ export interface Receipt {
 	createdAt: Date;
 	changedAt: Date;
 	pkRent: number;
+	pkReceiptStatus: number;
+	isPaid: 1 | 0;
+	rent: Rent;
 	price: string;
 	currencyCode: string;
 	dateDue: Date;
-	pkReceiptStatus: number;
 	currentlyPaid: string;
-	isPaid: 1 | 0;
 	receiptStatus: string;
-	rent: Rent;
 }
 export interface Vehicle {
 	changedAt: string;
@@ -57,6 +57,7 @@ export interface Interaction {
 export enum EInteractionReducer {
 	logoff,
 	loggedIn,
+	stateChanged
 }
 export interface DialogRef {
 	ref: DynamicDialogRef;

@@ -54,6 +54,15 @@ import { ChangeStatusVehicleComponent } from './components/_employed/vehicle-lis
 import { ViewVehicleComponent } from './components/_employed/vehicle-list/vehicle/view-vehicle/view-vehicle.component';
 import { KeyFilterModule } from 'primeng/keyfilter';
 import { InputNumberModule } from 'primeng/inputnumber';
+import { UserListComponent } from './components/_employed/user-list/user-list.component';
+import { UpdateUserComponent } from './components/_employed/user-list/update-user/update-user.component';
+import { SliderModule } from 'primeng/slider';
+import { RentComponent } from './rent/rent.component';
+import { ReceiptListComponent } from './components/_employed/receipt-list/receipt-list.component';
+import { InsertEditReceiptComponent } from './components/_employed/receipt-list/crud/insert-edit-receipt/insert-edit-receipt.component';
+import { AddPaymentComponent } from './components/_employed/receipt-list/crud/add-payment/add-payment.component';
+import { ChangeReceiptStatusComponent } from './components/_employed/receipt-list/crud/change-receipt-status/change-receipt-status.component';
+import { RentCompleteUpdateKmComponent } from './components/_employed/rent-list/crud/rent-complete-update-km/rent-complete-update-km.component';
 
 const ngxUiLoaderConfig: NgxUiLoaderConfig = {
 	bgsColor: '#95B7FF',
@@ -96,6 +105,14 @@ const ngxUiLoaderConfig: NgxUiLoaderConfig = {
 		InsertUpdateVehicleComponent,
 		ChangeStatusVehicleComponent,
 		ViewVehicleComponent,
+		UserListComponent,
+		UpdateUserComponent,
+		RentComponent,
+		ReceiptListComponent,
+		InsertEditReceiptComponent,
+		AddPaymentComponent,
+		ChangeReceiptStatusComponent,
+		RentCompleteUpdateKmComponent,
 	],
 	imports: [
 		DropdownModule,
@@ -126,6 +143,7 @@ const ngxUiLoaderConfig: NgxUiLoaderConfig = {
 		AppRoutingModule,
 		InputTextModule,
 		InputNumberModule,
+		SliderModule,
 	],
 	providers: [
 		{
@@ -141,7 +159,7 @@ const ngxUiLoaderConfig: NgxUiLoaderConfig = {
 		ConfirmationService,
 		MessageService,
 	],
-	entryComponents: [InsertUpdateVehicleComponent, ChangeStatusVehicleComponent, ViewVehicleComponent, ChangeStatusRentComponent, ViewRentComponent, AddRentComponent, LoginComponent, EditProfileComponent],
+	entryComponents: [RentCompleteUpdateKmComponent, InsertEditReceiptComponent, AddPaymentComponent, ChangeReceiptStatusComponent, UpdateUserComponent, InsertUpdateVehicleComponent, ChangeStatusVehicleComponent, ViewVehicleComponent, ChangeStatusRentComponent, ViewRentComponent, AddRentComponent, LoginComponent, EditProfileComponent],
 	bootstrap: [AppComponent],
 })
 export class AppModule {}

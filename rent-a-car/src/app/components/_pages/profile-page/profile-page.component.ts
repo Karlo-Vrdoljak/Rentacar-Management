@@ -9,8 +9,9 @@ import { UserService } from 'src/app/_services/user.service';
 import { VehicleService } from 'src/app/_services/vehicle.service';
 import { use } from 'typescript-mix';
 import { EditProfileComponent } from '../../user/edit-profile/edit-profile.component';
-import { Rent, User, UserRentStats, Vehicle } from './../../../_consts/consts';
+import { EInteractionReducer, Rent, User, UserRentStats } from './../../../_consts/consts';
 import { AuthService } from './../../../_services/auth.service';
+import { Config } from './../../../_services/config';
 
 export interface ProfilePageComponent extends BaseClass {}
 
@@ -25,7 +26,7 @@ export class ProfilePageComponent implements OnInit {
 	user: User;
 	rents: Rent[];
 	stats: UserRentStats;
-	constructor(public loader: LoaderService, public dialogService: DialogService, public auth: AuthService, public route: ActivatedRoute, public router: Router, public vehicleService: VehicleService, public userService: UserService) {
+	constructor(public config: Config, public loader: LoaderService, public dialogService: DialogService, public auth: AuthService, public route: ActivatedRoute, public router: Router, public vehicleService: VehicleService, public userService: UserService) {
 		this.destroy = new Subject();
 		route.params.subscribe((data) => {
 			const { pkUser } = data;
@@ -67,7 +68,8 @@ export class ProfilePageComponent implements OnInit {
 					.pipe(takeUntil(this.destroy))
 					.subscribe((user: User) => {
 						this.loader.stop('Changes saved!');
-
+						this.config.nextInteraction({ id: EInteractionReducer.loggedIn, args: this.auth.user });
+						this.auth.user = user;
 						this.user = user;
 					});
 			}

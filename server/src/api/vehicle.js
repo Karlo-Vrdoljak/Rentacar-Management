@@ -24,6 +24,11 @@ router.get('/user/vehicles', async (req, res) => {
 	res.send(await prisma.rent.findMany({ where: { pkUserRented: pkUser }, include: { vehicle: { include: { vehicleStatus: true } }, receipt: true, rentStatus: true }, orderBy: { pkRentStatus: 'asc' } }));
 });
 
+router.get('/vehicles/rent', async (req, res) => {
+	const { pkRent } = req.query;
+	res.send(await prisma.rent.findMany({ where: { pkVehicle: pkRent }, include: { vehicle: { include: { vehicleStatus: true } }, receipt: true, rentStatus: true }, orderBy: { pkRentStatus: 'asc' } }));
+});
+
 router.put('/update/status', async (req, res) => {
 	const { pkVehicle, pkVehicleStatus } = req.body;
 	res.send(
@@ -40,19 +45,6 @@ router.put('/update/status', async (req, res) => {
 	);
 });
 
-router.put('/update/kilometers', async (req, res) => {
-	const { pkVehicle, currentKilometers } = req.body;
-	res.send(
-		pkVehicle
-			? await prisma.vehicle.update({
-					where: { pkVehicle },
-					data: {
-						currentKilometers,
-					},
-			  })
-			: {}
-	);
-});
 
 router.post('/upsert', async (req, res) => {
 	const { pkVehicle, manufacturer, model, dateOfManufacture, startingKilometers, currentKilometers, gasType, color, code } = req.body;

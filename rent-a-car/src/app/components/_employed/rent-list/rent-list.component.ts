@@ -5,13 +5,16 @@ import { Table } from 'primeng/table';
 import { forkJoin } from 'rxjs';
 import { first } from 'rxjs/operators';
 import { BaseClass } from 'src/app/_abstract/base.class';
-import { Rent, ONE_SECOND } from 'src/app/_consts/consts';
+import { Rent, ONE_SECOND, EInteractionReducer, RENT_STATUS } from 'src/app/_consts/consts';
 import { LoaderService } from 'src/app/_services/loader.service';
 import { RentService } from 'src/app/_services/rent.service';
 import { use } from 'typescript-mix';
 import { AddRentComponent } from './crud/add-rent/add-rent.component';
 import { ChangeStatusRentComponent } from './crud/change-status-rent/change-status-rent.component';
 import { ViewRentComponent } from './crud/view-rent/view-rent.component';
+import { Config } from 'src/app/_services/config';
+import { AuthService } from 'src/app/_services/auth.service';
+import { RentCompleteUpdateKmComponent } from './crud/rent-complete-update-km/rent-complete-update-km.component';
 
 export interface RentListComponent extends BaseClass {}
 
@@ -28,7 +31,7 @@ export class RentListComponent implements OnInit {
 	@Output() onChange = new EventEmitter<any>();
 	selectedRents: Rent[];
 	filter: string | null;
-	constructor(public rent: RentService, public loader: LoaderService, public toast: MessageService, public rentService: RentService, public ds: DialogService, public cs: ConfirmationService) {}
+	constructor(public auth: AuthService, public config: Config, public rent: RentService, public loader: LoaderService, public toast: MessageService, public rentService: RentService, public ds: DialogService, public cs: ConfirmationService) {}
 
 	ngOnInit(): void {
 		this.cols = [
@@ -63,10 +66,13 @@ export class RentListComponent implements OnInit {
 							console.log(data);
 							this.showToast({ toast: this.toast, detail: 'Deleted successfully!' });
 							this.onChange.emit({});
+							this.config.nextInteraction({ id: EInteractionReducer.stateChanged });
 						},
 						(err) => {
 							console.log(err);
 							this.onChange.emit({});
+							this.config.nextInteraction({ id: EInteractionReducer.stateChanged });
+
 							this.loader.stop();
 						}
 					);
@@ -92,8 +98,30 @@ export class RentListComponent implements OnInit {
 				ref.destroy();
 			}, ONE_SECOND);
 			this.onChange.emit({});
+			this.config.nextInteraction({ id: EInteractionReducer.stateChanged });
 		});
 	}
+
+	updateVehicleKilometersOnRentComplete(rent: Rent) {
+		const ref = this.ds.open(RentCompleteUpdateKmComponent, { header: 'Update kilometers', modal: true, closable: false, closeOnEscape: false, data: { rent } });
+		ref.onClose.subscribe((data: { kilometers }) => {
+			if (data) {
+				const { kilometers } = data;
+				if (kilometers) {
+					this.rentService
+						.updateKilometers({ pkRent: rent.pkRent, currentKilometers: kilometers.currentKilometers })
+						.pipe(first())
+						.subscribe((data) => {
+							this.loader.stop('The rent is now completed!');
+						});
+				}
+			}
+			setTimeout(() => {
+				ref.destroy();
+			}, ONE_SECOND);
+		});
+	}
+
 	editRent(rent: Rent) {
 		const ref = this.ds.open(AddRentComponent, { header: 'Edit rent', modal: true, data: { rent } });
 		ref.onClose.subscribe((data?) => {
@@ -106,10 +134,12 @@ export class RentListComponent implements OnInit {
 						(data) => {
 							this.loader.stop('Rent updated successfully!');
 							this.onChange.emit({});
+							this.config.nextInteraction({ id: EInteractionReducer.stateChanged });
 						},
 						(err) => {
 							this.loader.stop();
 							this.onChange.emit({});
+							this.config.nextInteraction({ id: EInteractionReducer.stateChanged });
 						}
 					);
 			}
@@ -117,6 +147,7 @@ export class RentListComponent implements OnInit {
 				ref.destroy();
 			}, ONE_SECOND);
 			this.onChange.emit({});
+			this.config.nextInteraction({ id: EInteractionReducer.stateChanged });
 		});
 	}
 	changeStatusRent(rent: Rent) {
@@ -131,13 +162,17 @@ export class RentListComponent implements OnInit {
 					.pipe(first())
 
 					.subscribe(
-						(data) => {
+						(rent: Rent) => {
+							rent.pkRentStatus == RENT_STATUS.Complete && this.updateVehicleKilometersOnRentComplete(rent);
+
 							this.loader.stop('Status changed successfully!');
 							this.onChange.emit({});
+							this.config.nextInteraction({ id: EInteractionReducer.stateChanged });
 						},
 						(err) => {
 							this.loader.stop();
 							this.onChange.emit({});
+							this.config.nextInteraction({ id: EInteractionReducer.stateChanged });
 						}
 					);
 			}
@@ -158,10 +193,12 @@ export class RentListComponent implements OnInit {
 						(data) => {
 							this.loader.stop('Rent added successfully!');
 							this.onChange.emit({});
+							this.config.nextInteraction({ id: EInteractionReducer.stateChanged });
 						},
 						(err) => {
 							this.loader.stop();
 							this.onChange.emit({});
+							this.config.nextInteraction({ id: EInteractionReducer.stateChanged });
 						}
 					);
 			}

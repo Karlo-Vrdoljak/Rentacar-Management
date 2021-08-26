@@ -1,0 +1,16 @@
+<div class="flex items-center justify-center w-96">
+	<div class="p-4 w-full max-w-2xl">
+		<form [formGroup]="form">
+			<div class="flex flex-col py-2 w-full items-start">
+				<span class="p-float-label w-full">
+					<p-inputNumber onfocus="this.select()" inputStyleClass="w-full" formControlName="currentlyPaid" mode="decimal" suffix=" HRK" [minFractionDigits]="2"> </p-inputNumber>
+					<label for="">Payment</label>
+				</span>
+				<ngx-form-error class="text-red-500" [control]="form.get('currentlyPaid')"></ngx-form-error>
+			</div>
+		</form>
+		<div class="pt-8">
+			<button [disabled]="!form.valid" [loading]="loader.isLoading" (click)="save()" pButton pRipple [label]="'Add payment'" icon="pi pi-dollar" class="w-full"></button>
+		</div>
+	</div>
+</div>
