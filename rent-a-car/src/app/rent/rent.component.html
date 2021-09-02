@@ -2,9 +2,9 @@
 	<div class="w-full text-lg font-sans p-2 lg:p-4">
 		<div class="font-semibold text-gray-800 flex flex-row flex-wrap items-center">
 			<div class="flex pb-4 flex-wrap flex-row w-full items-center justify-between">
-				<button [disabled]="isRestricted(rent.rentStatus?.pkRentStatus == rentStatus.Complete, auth)" pTooltip="Edit rent" (click)="editRent()" pButton pRipple type="button" icon="pi pi-pencil" class="p-button-rounded p-button-warning p-button-text"></button>
-				<button [disabled]="isRestricted(rent.rentStatus?.pkRentStatus == rentStatus.Complete, auth)" pTooltip="Change status" (click)="changeStatusRent()" pButton pRipple type="button" icon="pi pi-flag" class="p-button-rounded p-button-warning p-button-text"></button>
-				<button [disabled]="isRestricted(rent.rentStatus?.pkRentStatus == rentStatus.Complete, auth)" pTooltip="Delete" (click)="confirmDelete($event, [rent])" pButton pRipple type="button" icon="pi pi-trash" class="p-button-rounded p-button-danger p-button-text"></button>
+				<button  pTooltip="Edit rent" (click)="editRent()" pButton pRipple type="button" icon="pi pi-pencil" class="p-button-rounded p-button-warning p-button-text"></button>
+				<button  pTooltip="Change status" (click)="changeStatusRent()" pButton pRipple type="button" icon="pi pi-flag" class="p-button-rounded p-button-warning p-button-text"></button>
+				<button  pTooltip="Delete" (click)="confirmDelete($event, [rent])" pButton pRipple type="button" icon="pi pi-trash" class="p-button-rounded p-button-danger p-button-text"></button>
 			</div>
 			<div class="flex flex-wrap flex-row w-full items-center justify-between">
 				<div class="pr22"><span class="font-normal">Renting from</span></div>

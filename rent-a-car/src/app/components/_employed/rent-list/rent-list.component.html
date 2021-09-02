@@ -112,9 +112,9 @@
 			<td>
 				<div class="flex flex-row flex-wrap items-center">
 					<button pTooltip="Expand" (click)="expand(rowData)" pButton pRipple type="button" icon="pi pi-external-link" class="p-button-rounded p-button-text"></button>
-					<button [disabled]="isRestricted(rowData?.pkRentStatus == rentStatus.Complete, auth)" pTooltip="Edit rent" (click)="editRent(rowData)" pButton pRipple type="button" icon="pi pi-pencil" class="p-button-rounded p-button-warning p-button-text"></button>
-					<button [disabled]="isRestricted(rowData?.pkRentStatus == rentStatus.Complete, auth)" pTooltip="Change status" (click)="changeStatusRent(rowData)" pButton pRipple type="button" icon="pi pi-flag" class="p-button-rounded p-button-warning p-button-text"></button>
-					<button [disabled]="isRestricted(rowData?.pkRentStatus == rentStatus.Complete, auth)" pTooltip="Delete" (click)="confirmDelete($event, [rowData])" pButton pRipple type="button" icon="pi pi-trash" class="p-button-rounded p-button-danger p-button-text"></button>
+					<button pTooltip="Edit rent" (click)="editRent(rowData)" pButton pRipple type="button" icon="pi pi-pencil" class="p-button-rounded p-button-warning p-button-text"></button>
+					<button pTooltip="Change status" (click)="changeStatusRent(rowData)" pButton pRipple type="button" icon="pi pi-flag" class="p-button-rounded p-button-warning p-button-text"></button>
+					<button pTooltip="Delete" (click)="confirmDelete($event, [rowData])" pButton pRipple type="button" icon="pi pi-trash" class="p-button-rounded p-button-danger p-button-text"></button>
 				</div>
 			</td>
 		</tr>
